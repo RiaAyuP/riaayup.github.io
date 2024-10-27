@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Ria Ayu Pramudita</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @media (min-width: 768px) {
+            .content-wrapper {
+                display: flex;
+                height: calc(100vh - 4rem);
+            }
+            .left-column {
+                width: 33.333%;
+                position: fixed;
+                overflow-y: auto;
+            }
+            .right-column {
+                width: 66.666%;
+                margin-left: 33.333%;
+                overflow-y: auto;
+            }
+        }
+        @media (max-width: 767px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            .left-column, .right-column {
+                width: 100%;
+                position: static;
+                overflow-y: visible;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-black flex flex-col">
+    <header class="sticky top-0 z-10 bg-white border-b border-gray-200">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="inline-block">
+                <img src="assets/rap-logo.svg" alt="Ria Ayu Pramudita Logo" class="h-8" />
+              </a>
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-black hover:text-pink-600 transition-colors">Home</a></li>
+                <li><a href="about.html" class="text-black hover:text-pink-600 transition-colors">About</a></li>
+                <li><a href="publication.html" class="text-black hover:text-pink-600 transition-colors">Publications</a></li>
+                <li><a href="#blog" class="text-black hover:text-pink-600 transition-colors">Blog</a></li>
+                <li><a href="#shop" class="text-black hover:text-pink-600 transition-colors">Shop</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="flex-grow container mx-auto">
+        <div class="content-wrapper">
+            <div class="left-column p-4">
+                <div class="space-y-6 flex flex-col items-center text-center">
+                    <img src="assets/profile-about-1.jpg" alt="Profile Picture of Ria Ayu Pramudita" width="250" height="250" class="rounded-full">
+                    <div>
+                        <h1 class="text-3xl font-bold mb-2">Ria Ayu Pramudita</h1>
+                        <div class="flex justify-center space-x-4 mb-6">
+                            <a href="https://scholar.google.com/citations?hl=en&user=iu-o_awAAAAJ" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="ai ai-google-scholar"></i></a>
+                            <a href="https://www.linkedin.com/in/ria-ayu-pramudita/" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="https://www.threads.net/@riaayupramudita_" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-threads"></i></a>
+                            <a href="https://github.com/RiaAyuP" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-github"></i></a>
+                            <a href="https://instagram.com/riaayupramudita_" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                        <p class="text-gray-800 mb-6"><i class="fas fa-envelope mr-2"></i> dita@riaayupramudita.id</p>
+                        <button class="btn-outline" id="downloadBtn">
+                            <i class="fas fa-file-pdf mr-2"></i> Download CV as PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="right-column p-4">
+                <section id="education" class="mb-12">
+                    <h2 class="text-2xl font-bold mb-4">Education</h2>
+                    <ul class="space-y-4">
+                        <li class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold">Doctor of Engineering in Chemical Engineering</h3>
+                            <p>Tokyo Institute of Technology, Japan (2017-2020)</p>
+                        </li>
+                        <li class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold">Master of Engineering in Chemical Engineering</h3>
+                            <p>Hongik University, South Korea (2013-2015)</p>
+                        </li>
+                        <li class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold">Bachelor of Science in Chemical Engineering</h3>
+                            <p>Institut Teknologi Bandung, Indonesia (2009-2013)</p>
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="experience" class="mb-12">
+                    <h2 class="text-2xl font-bold mb-4">Professional Experience</h2>
+                    <ul class="space-y-4">
+                        <li class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold">Post-Doctoral Researcher</h3>
+                            <p>Tokyo Institute of Technology (2020-2021)</p>
+                            <p>I helped research in Motokura-Manaka Laboratory about the development of catalysts to convert carbon dioxide to valuable chemicals with silicon-based reducing agents.</p>
+                        </li>
+                        <li class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold">Senior Staff</h3>
+                            <p>PT Mitsui Indonesia (2015-2017)</p>
+                            <p>The Indonesian office of Japanese trading company Mitsui & Co. Ltd. I entered as the first batch of the Management Trainee program and worked in Accounting and then Energy Division.</p>
+                        </li>
+                        <li class="bg-gray-100 p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold">Reporter</h3>
+                            <p>Kantor Berita ITB (2011-2013)</p>
+                            <p>The official news office of <a href="https://itb.ac.id/news/indeks?page=1"><u>Institut Teknologi Bandung</u></a>. I regularly wrote articles about campus life, research achievements, and academic activities of ITB students and faculty members.</p>
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="skills" class="mb-12">
+                    <h2 class="text-2xl font-bold mb-4">Skills</h2>
+                    <ul class="grid grid-cols-2 gap-4">
+                        <li class="bg-pink-100 p-4 rounded-lg">Chemical Engineering</li>
+                        <li class="bg-pink-100 p-4 rounded-lg">Research Methodology</li>
+                        <li class="bg-pink-100 p-4 rounded-lg">Generative AI</li>
+                        <li class="bg-pink-100 p-4 rounded-lg">Prompt Engineering</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 py-4 text-center">
+        <p>&copy; 2024 Ria Ayu Pramudita. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
