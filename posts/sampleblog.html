@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Blog Post - Ria Ayu Pramudita</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-white text-black flex flex-col">
+    <header class="sticky top-0 z-10 bg-white border-b border-gray-200">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="inline-block">
+                <img src="assets/rap-logo.svg" alt="Ria Ayu Pramudita Logo" class="h-8" />
+            </a>
+            <ul class="flex space-x-4">
+                <li><a href="https://riaayupramudita.id/index.html" class="text-black hover:text-pink-600 transition-colors">Home</a></li>
+                <li><a href="https://riaayupramudita.id/about.html" class="text-black hover:text-pink-600 transition-colors">About</a></li>
+                <li><a href="https://riaayupramudita.id/publication.html" class="text-black hover:text-pink-600 transition-colors">Publications</a></li>
+                <li><a href="https://riaayupramudita.id/blog.html" class="text-black hover:text-pink-600 transition-colors">Blog</a></li>
+                <li><a href="#shop" class="text-black hover:text-pink-600 transition-colors">Shop</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <article class="max-w-3xl mx-auto">
+            <header class="mb-8">
+                <h1 class="text-4xl font-bold mb-4">The Future of Chemical Engineering in a Sustainable World</h1>
+                <p class="text-gray-600">Published on October 30, 2024 by AI</p>
+            </header>
+
+            <img src="https://riaayupramudita.wordpress.com/wp-content/uploads/2023/01/pexels-photo-5726837-4246285596-e1674723902696.jpeg?w=1024" alt="Chemical Engineering Sustainable Practices" class="w-full h-64 object-cover rounded-lg mb-8">
+
+            <div class="prose prose-lg">
+                <p>As we navigate the challenges of the 21st century, the role of chemical engineering in creating a sustainable future has never been more critical. From developing eco-friendly materials to innovating clean energy solutions, chemical engineers are at the forefront of addressing global environmental concerns.</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">Sustainable Materials: A Game Changer</h2>
+                <p>One of the most exciting areas of research in chemical engineering today is the development of sustainable materials. These materials, designed to have minimal environmental impact throughout their lifecycle, are revolutionizing industries from packaging to construction.</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">Clean Energy: The Path Forward</h2>
+                <p>Chemical engineers are also playing a crucial role in the transition to clean energy. From improving the efficiency of solar cells to developing new battery technologies, our work is helping to pave the way for a future powered by renewable energy sources.</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">Water Treatment: Ensuring Global Access</h2>
+                <p>Access to clean water remains a global challenge, and chemical engineers are at the forefront of developing innovative water treatment technologies. From advanced filtration systems to chemical processes that remove contaminants, our work is helping to ensure that clean water is available to communities around the world.</p>
+
+                <h2 class="text-2xl font-semibold mt-6 mb-4">Conclusion</h2>
+                <p>The future of chemical engineering is bright, with endless opportunities to make a positive impact on our world. As we continue to innovate and develop sustainable solutions, we have the power to shape a cleaner, greener, and more sustainable future for generations to come.</p>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-gray-200">
+                <h3 class="text-xl font-semibold mb-4">Share this post</h3>
+                <div id="social-share" class="flex space-x-4">
+                    <a href="https://twitter.com/share?url=YOUR_URL&text=Check out this post!" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=YOUR_URL" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.linkedin.com/shareArticle?url=YOUR_URL&title=Check out this post!" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.reddit.com/submit?url=YOUR_URL&title=Check out this post!" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fab fa-reddit"></i></a>
+                    <a href="https://api.whatsapp.com/send?url=YOUR_URL&title=Check out this post!" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-gray-100 py-4 text-center">
+        <p>&copy; 2024 Ria Ayu Pramudita. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          // Get the current URL of the blog post
+          const postUrl = encodeURIComponent(window.location.href);
+      
+          // Find all social share links within the div with id "social-share" and replace YOUR_URL with the dynamic post URL
+          document.querySelectorAll('#social-share a').forEach(link => {
+            link.href = link.href.replace('YOUR_URL', postUrl);
+          });
+        });
+      </script>
+</body>
+</html>
