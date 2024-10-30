@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts - Ria Ayu Pramudita</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .blog-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+        .blog-card {
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .blog-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .blog-card-content {
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-black flex flex-col">
+    <header class="sticky top-0 z-10 bg-white border-b border-gray-200">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="inline-block">
+                <img src="assets/rap-logo.svg" alt="Ria Ayu Pramudita Logo" class="h-8" />
+            </a>
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-black hover:text-pink-600 transition-colors">Home</a></li>
+                <li><a href="about.html" class="text-black hover:text-pink-600 transition-colors">About</a></li>
+                <li><a href="publication.html" class="text-black hover:text-pink-600 transition-colors">Publications</a></li>
+                <li><a href="blog.html" class="text-black hover:text-pink-600 transition-colors">Blog</a></li>
+                <li><a href="#shop" class="text-black hover:text-pink-600 transition-colors">Shop</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center">Blog Posts</h1>
+        <div class="blog-grid">
+            <!-- Repeat this block for each blog post -->
+            <article class="blog-card">
+                <img src="https://riaayupramudita.wordpress.com/wp-content/uploads/2023/01/pexels-photo-5726837-4246285596-e1674723902696.jpeg?w=1024" alt="Blog post thumbnail">
+                <div class="blog-card-content">
+                    <h2 class="text-xl font-semibold mb-2">The Future of Chemical Engineering in a Sustainable World</h2>
+                    <p class="text-gray-600 mb-4">Sample blog post written by AI.</p>
+                    <a href="posts/sampleblog.html" class="btn-outline">Read More</a>
+                </div>
+            </article>
+            <!-- Repeat the article block for more blog posts -->
+            <!-- You can add more articles here -->
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 py-4 text-center">
+        <p>&copy; 2024 Ria Ayu Pramudita. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
