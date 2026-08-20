@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Ria Ayu Pramudita | Chemical Engineer & AI Specialist</title>
+    <meta name="description" content="Personal Website & Academic Portfolio of Dr. Ria Ayu Pramudita - Chemical Engineer, Researcher in CO2 Catalysis, and AI Integration Specialist.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #e6edf3;
+            --text-muted: #8b949e;
+            --accent-color: #10b981; /* Emerald Green */
+            --accent-hover: #059669;
+            --accent-light: rgba(16, 185, 129, 0.1);
+            --font-heading: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --container-max: 1100px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #34d399;
+        }
+
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        #hero {
+            padding: 6rem 0 4rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: 3.2rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin-bottom: 2rem;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            color: #000;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Section Layout */
+        section {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .card-body {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Tags */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background-color: var(--accent-light);
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Tabbed Publications Section */
+        .pub-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .pub-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            position: relative;
+        }
+
+        .pub-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-main);
+        }
+
+        .pub-authors {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .pub-journal {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .nav-links {
+                display: none; /* Can be updated with JS mobile toggle */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Dr. Ria Ayu Pramudita</a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#publications">Publications</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="container">
+        <section id="hero">
+            <h1 class="hero-title">Ria Ayu Pramudita, D.Eng.</h1>
+            <p class="hero-subtitle">Chemical Engineer & AI Integration Specialist</p>
+            <p class="hero-description">
+                Leveraging advanced expertise in chemical engineering and $CO_2$ catalysis alongside modern artificial intelligence toolsets. Focused on building smart process models, modern web solutions, and automated workflows.
+            </p>
+            <div class="social-buttons">
+                <a href="https://www.linkedin.com/in/ria-ayu-pramudita/" target="_blank" class="btn btn-primary">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="https://scholar.google.com/citations?hl=en&user=iu-o_awAAAAJ" target="_blank" class="btn btn-outline">
+                    <i class="fas fa-graduation-cap"></i> Google Scholar
+                </a>
+                <a href="mailto:dita@riaayupramudita.com" class="btn btn-outline">
+                    <i class="fas fa-envelope"></i> Get in Touch
+                </a>
+            </div>
+        </section>
+
+        <!-- About & Education Section -->
+        <section id="about">
+            <h2 class="section-title">Education & Background</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Tokyo Institute of Technology</div>
+                            <div class="card-subtitle">Doctor of Engineering (D.Eng.)</div>
+                        </div>
+                        <span class="card-date">2017 – 2020</span>
+                    </div>
+                    <p class="card-body">Focused on Chemical Engineering, homogeneous/heterogeneous catalysis, and green carbon dioxide conversion technologies.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Hongik University</div>
+                            <div class="card-subtitle">Master of Engineering (M.Eng.)</div>
+                        </div>
+                        <span class="card-date">2013 – 2015</span>
+                    </div>
+                    <p class="card-body">Researched chemical engineering process design, viscosity, and surfactant foam applications.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Institut Teknologi Bandung (ITB)</div>
+                            <div class="card-subtitle">Bachelor of Science (B.Sc.)</div>
+                        </div>
+                        <span class="card-date">2009 – 2013</span>
+                    </div>
+                    <p class="card-body">Foundational studies in Chemical Engineering process engineering and academic technical journalism.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 1rem;">Core Competencies</div>
+                    <div class="tag-container">
+                        <span class="tag">$CO_2$ Catalysis</span>
+                        <span class="tag">Organocatalytic Reduction</span>
+                        <span class="tag">Research Methodology</span>
+                        <span class="tag">AI-Assisted Web Dev (React/Expo)</span>
+                        <span class="tag">Automation (n8n)</span>
+                        <span class="tag">Academic Writing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="pub-list">
+                <div class="pub-item">
+                    <div class="card-header">
+                        <div class="card-title">Post-Doctoral Researcher</div>
+                        <span class="card-date">2020 – 2021</span>
+                    </div>
+                    <div class="card-subtitle">Tokyo Institute of Technology (Motokura-Manaka Laboratory)</div>
+                    <p class="card-body">
+                        Engineered novel catalyst development processes converting carbon dioxide into valuable chemical building blocks utilizing silicon-based reducing agents.
+                    </p>
+                </div>
+
+                <div class="pub-item">
+                    <div class="card-header">
+                        <div class="card-title">Senior Staff / Management Trainee</div>
+                        <span class="card-date">2015 – 2017</span>
+                    </div>
+                    <div class="card-subtitle">PT Mitsui Indonesia (Mitsui & Co. Ltd.)</div>
+                    <p class="card-body">
+                        Managed commercial activities across the Energy Division and accounting operations as part of the inaugural Management Trainee cohort.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications">
+            <h2 class="section-title">Key Publications</h2>
+            <div class="pub-list">
+                
+                <div class="pub-item">
+                    <div class="pub-title">Heterogeneous Organocatalysts for the Reduction of Carbon Dioxide with Silanes</div>
+                    <div class="pub-authors">Ria Ayu Pramudita, Ken Motokura</div>
+                    <div class="pub-journal">ChemSusChem (2021)</div>
+                </div>
+
+                <div class="pub-item">
+                    <div class="pub-title">A Resin-Supported Formate Catalyst for the Transformative Reduction of Carbon Dioxide with Hydrosilanes</div>
+                    <div class="pub-authors">Ria Ayu Pramudita, Yuichi Manaka, Ken Motokura</div>
+                    <div class="pub-journal">Chemistry – A European Journal (2020)</div>
+                </div>
+
+                <div class="pub-item">
+                    <div class="pub-title">Silica-Supported Alkylammonium Formate Catalyst for Hydrosilylation of Carbon Dioxide</div>
+                    <div class="pub-authors">Ria Ayu Pramudita, Chihiro Nakagawa, Yuichi Manaka, Ken Motokura</div>
+                    <div class="pub-journal">Chemistry Letters (2019)</div>
+                </div>
+
+                <div class="pub-item">
+                    <div class="pub-title">Transformative Reduction of Carbon Dioxide through Organocatalysis with Silanes</div>
+                    <div class="pub-authors">Ria Ayu Pramudita, Ken Motokura</div>
+                    <div class="pub-journal">Green Chemistry (2018)</div>
+                </div>
+
+            </div>
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <a href="https://scholar.google.com/citations?hl=en&user=iu-o_awAAAAJ" target="_blank" class="btn btn-outline">View All Publications on Google Scholar &rarr;</a>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <h2 class="section-title">Tech & AI Projects</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">ChemE Portal</div>
+                    <div class="card-subtitle">Platform Development</div>
+                    <p class="card-body">An all-in-one platform built for Chemical Engineering researchers and industry professionals.</p>
+                    <div class="tag-container">
+                        <span class="tag">AI Integration</span>
+                        <span class="tag">Web Platform</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">STEM Playground</div>
+                    <div class="card-subtitle">Interactive Learning Tool</div>
+                    <p class="card-body">Interactive digital toolsets and playgrounds built to simplify scientific concepts for early learners.</p>
+                    <div class="tag-container">
+                        <span class="tag">Education Tech</span>
+                        <span class="tag">React</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" style="text-align: center;">
+            <h2 class="section-title">Get in Touch</h2>
+            <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 2rem auto;">
+                Interested in collaboration at the intersection of Chemical Engineering, CO2 Reduction, or AI applications?
+            </p>
+            <a href="mailto:dita@riaayupramudita.com" class="btn btn-primary">
+                Send an Email
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Dr. Ria Ayu Pramudita. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

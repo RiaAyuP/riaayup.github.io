@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ria Ayu Pramudita — chemical engineer, researcher, and builder exploring sustainable chemistry and AI-assisted technology." />
+  <title>Ria Ayu Pramudita — Researcher & Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#15221f;
+      --muted:#64716d;
+      --paper:#f7f5ef;
+      --white:#fffdf8;
+      --line:#dcded6;
+      --accent:#2e6f68;
+      --accent-2:#a7c5b9;
+      --warm:#d6b98b;
+      --max:1160px;
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:var(--paper);
+      font-family:"DM Sans",system-ui,sans-serif;
+      line-height:1.65;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(calc(100% - 40px),var(--max));margin:auto}
+    nav{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(14px);
+      background:rgba(247,245,239,.82);
+      border-bottom:1px solid rgba(220,222,214,.75);
+    }
+    .nav-inner{height:76px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-weight:700;letter-spacing:-.02em}
+    .brand span{color:var(--accent)}
+    .nav-links{display:flex;gap:28px;font-size:.92rem;color:#45514e}
+    .nav-links a:hover{color:var(--accent)}
+    .hero{padding:88px 0 100px;position:relative;overflow:hidden}
+    .hero:before{
+      content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+      right:-170px;top:-180px;background:radial-gradient(circle at 35% 35%,rgba(167,197,185,.65),rgba(167,197,185,0) 68%);
+      pointer-events:none;
+    }
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;text-transform:uppercase;
+      letter-spacing:.14em;font-size:.72rem;font-weight:700;color:var(--accent);margin-bottom:20px
+    }
+    .eyebrow:before{content:"";width:34px;height:1px;background:var(--accent)}
+    h1{
+      font-family:"Playfair Display",Georgia,serif;font-weight:500;
+      font-size:clamp(3.2rem,7vw,6.6rem);line-height:.98;letter-spacing:-.055em;
+      margin:0 0 28px;max-width:800px;
+    }
+    .hero-copy{font-size:1.15rem;color:#56625f;max-width:650px}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;
+      border-radius:999px;border:1px solid var(--ink);font-weight:600;font-size:.9rem;
+      transition:.2s ease;
+    }
+    .btn.primary{background:var(--ink);color:var(--white)}
+    .btn:hover{transform:translateY(-2px)}
+    .hero-card{
+      min-height:430px;border-radius:36px;background:linear-gradient(145deg,#dce8e2,#b7cec4);
+      position:relative;display:flex;align-items:flex-end;padding:30px;overflow:hidden;
+      box-shadow:0 24px 70px rgba(25,45,40,.12)
+    }
+    .hero-card:before{
+      content:"";position:absolute;width:330px;height:330px;border-radius:50%;
+      top:55px;right:-70px;background:rgba(255,253,248,.5)
+    }
+    .monogram{
+      position:absolute;top:70px;left:42px;font-family:"Playfair Display",serif;
+      font-size:9rem;line-height:1;color:rgba(21,34,31,.9);letter-spacing:-.08em
+    }
+    .card-label{
+      position:relative;background:rgba(255,253,248,.84);backdrop-filter:blur(12px);
+      padding:18px 20px;border-radius:18px;width:100%;font-size:.9rem
+    }
+    .card-label strong{display:block;font-size:1.05rem;margin-bottom:3px}
+    section{padding:100px 0}
+    .section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:44px}
+    .kicker{text-transform:uppercase;letter-spacing:.13em;font-size:.72rem;font-weight:700;color:var(--accent)}
+    h2{font-family:"Playfair Display",Georgia,serif;font-size:clamp(2.3rem,4vw,4rem);line-height:1.05;font-weight:500;letter-spacing:-.035em;margin:10px 0 0}
+    .intro{max-width:480px;color:var(--muted)}
+    .research{background:#e9eee9}
+    .research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .research-card{
+      background:rgba(255,253,248,.7);border:1px solid rgba(21,34,31,.08);padding:30px;
+      border-radius:var(--radius);min-height:240px
+    }
+    .number{font-size:.75rem;color:var(--accent);font-weight:700;letter-spacing:.1em}
+    .research-card h3{font-family:"Playfair Display",serif;font-size:1.55rem;line-height:1.15;margin:42px 0 12px}
+    .research-card p{color:var(--muted);font-size:.94rem}
+    .timeline{display:grid;gap:0}
+    .timeline-item{display:grid;grid-template-columns:150px 1fr;gap:35px;padding:28px 0;border-top:1px solid var(--line)}
+    .timeline-item:last-child{border-bottom:1px solid var(--line)}
+    .date{font-size:.82rem;color:var(--accent);font-weight:700}
+    .timeline h3{margin:0 0 5px;font-size:1.12rem}
+    .timeline p{margin:0;color:var(--muted)}
+    .pubs{background:#15221f;color:#f5f3eb}
+    .pubs .kicker{color:#a7c5b9}
+    .pubs .intro{color:#b8c4c0}
+    .pub-list{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .pub{
+      border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:24px;
+      transition:.2s ease;background:rgba(255,255,255,.025)
+    }
+    .pub:hover{background:rgba(255,255,255,.06);transform:translateY(-2px)}
+    .pub-year{font-size:.72rem;letter-spacing:.12em;color:#a7c5b9;font-weight:700}
+    .pub h3{font-family:"Playfair Display",serif;font-weight:500;font-size:1.35rem;line-height:1.25;margin:10px 0}
+    .pub p{margin:0;color:#b9c2bf;font-size:.88rem}
+    .pub a{display:inline-block;margin-top:14px;color:#d6b98b;font-size:.82rem;font-weight:700}
+    .projects{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+    .project{
+      border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--white)
+    }
+    .project.featured{background:#e5eee9;border-color:transparent;min-height:300px}
+    .project h3{font-family:"Playfair Display",serif;font-size:2rem;font-weight:500;margin:55px 0 10px}
+    .project p{color:var(--muted);max-width:650px}
+    .project-link{margin-top:24px;display:inline-block;font-weight:700;color:var(--accent)}
+    .contact{
+      background:#ded6c6;
+      text-align:center;
+      padding:110px 0
+    }
+    .contact h2{max-width:760px;margin:10px auto 18px}
+    .contact p{max-width:600px;margin:0 auto;color:#5e625e}
+    footer{padding:26px 0;color:#7a817d;font-size:.8rem}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px}
+    @media(max-width:820px){
+      .nav-links{display:none}
+      .hero-grid,.projects{grid-template-columns:1fr}
+      .hero{padding-top:55px}
+      .hero-card{min-height:340px}
+      .research-grid,.pub-list{grid-template-columns:1fr}
+      .section-head{display:block}
+      .intro{margin-top:18px}
+      .timeline-item{grid-template-columns:1fr;gap:5px}
+      section{padding:75px 0}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *{transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container nav-inner">
+      <a class="brand" href="#top">Ria Ayu <span>Pramudita</span></a>
+      <div class="nav-links">
+        <a href="#research">Research</a>
+        <a href="#journey">Journey</a>
+        <a href="#publications">Publications</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <header class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Researcher · Chemical Engineer · Builder</div>
+          <h1>Science with a human, practical edge.</h1>
+          <p class="hero-copy">
+            Ria Ayu Pramudita is a chemical engineer and researcher whose work spans
+            sustainable chemistry, carbon dioxide conversion, academic communication,
+            and AI-assisted technology.
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="#publications">Explore research</a>
+            <a class="btn" href="https://www.linkedin.com/in/ria-ayu-pramudita/" target="_blank" rel="noopener">LinkedIn ↗</a>
+            <a class="btn" href="https://scholar.google.com/citations?hl=en&user=iu-o_awAAAAJ" target="_blank" rel="noopener">Google Scholar ↗</a>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Ria Ayu Pramudita monogram">
+          <div class="monogram">RA</div>
+          <div class="card-label">
+            <strong>Research • Writing • Technology</strong>
+            From catalytic chemistry to accessible digital tools.
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="research" class="research">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">01 / Research</div>
+            <h2>Curiosity, translated into useful work.</h2>
+          </div>
+          <p class="intro">
+            A research background grounded in chemical engineering, with particular
+            experience in catalytic CO₂ conversion and a growing focus on practical AI applications.
+          </p>
+        </div>
+        <div class="research-grid">
+          <article class="research-card">
+            <div class="number">01</div>
+            <h3>Sustainable Chemistry</h3>
+            <p>Research on transforming carbon dioxide into valuable chemicals using catalytic systems and silicon-based reducing agents.</p>
+          </article>
+          <article class="research-card">
+            <div class="number">02</div>
+            <h3>Research & Writing</h3>
+            <p>Academic writing, scientific communication, research methodology, and experience reporting on research and university life.</p>
+          </article>
+          <article class="research-card">
+            <div class="number">03</div>
+            <h3>AI-Assisted Building</h3>
+            <p>Exploring AI-assisted front-end development and automation to turn ideas into useful, approachable digital products.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="journey">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">02 / Journey</div>
+            <h2>A multidisciplinary path.</h2>
+          </div>
+          <p class="intro">Education and professional experience across Indonesia, South Korea, and Japan.</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="date">2017 — 2020</div>
+            <div><h3>Doctor of Engineering · Chemical Engineering</h3><p>Tokyo Institute of Technology, Japan</p></div>
+          </div>
+          <div class="timeline-item">
+            <div class="date">2020 — 2021</div>
+            <div><h3>Post-Doctoral Researcher</h3><p>Tokyo Institute of Technology · Motokura-Manaka Laboratory</p></div>
+          </div>
+          <div class="timeline-item">
+            <div class="date">2015 — 2017</div>
+            <div><h3>Senior Staff</h3><p>PT Mitsui Indonesia · Management Trainee, Accounting & Energy Division</p></div>
+          </div>
+          <div class="timeline-item">
+            <div class="date">2013 — 2015</div>
+            <div><h3>Master of Engineering · Chemical Engineering</h3><p>Hongik University, South Korea</p></div>
+          </div>
+          <div class="timeline-item">
+            <div class="date">2009 — 2013</div>
+            <div><h3>Bachelor of Science · Chemical Engineering</h3><p>Institut Teknologi Bandung, Indonesia</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="publications" class="pubs">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">03 / Selected publications</div>
+            <h2>Research worth revisiting.</h2>
+          </div>
+          <p class="intro">
+            Selected scientific publications from work in CO₂ conversion, organocatalysis,
+            hydrosilylation, and enhanced oil recovery.
+          </p>
+        </div>
+        <div class="pub-list">
+          <article class="pub">
+            <div class="pub-year">2021 · ChemSusChem</div>
+            <h3>Heterogeneous Organocatalysts for the Reduction of Carbon Dioxide with Silanes</h3>
+            <p>Ria Ayu Pramudita, Ken Motokura</p>
+            <a href="https://doi.org/10.1002/cssc.202002300" target="_blank" rel="noopener">Read paper ↗</a>
+          </article>
+          <article class="pub">
+            <div class="pub-year">2020 · Chemistry — A European Journal</div>
+            <h3>A Resin-Supported Formate Catalyst for the Transformative Reduction of Carbon Dioxide with Hydrosilanes</h3>
+            <p>Ria Ayu Pramudita, Yuichi Manaka, Ken Motokura</p>
+            <a href="https://doi.org/10.1002/chem.202001605" target="_blank" rel="noopener">Read paper ↗</a>
+          </article>
+          <article class="pub">
+            <div class="pub-year">2019 · ACS Sustainable Chemistry & Engineering</div>
+            <h3>Formate-Catalyzed Selective Reduction of Carbon Dioxide to Formate Products Using Hydrosilanes</h3>
+            <p>Ken Motokura, Chihiro Nakagawa, Ria Ayu Pramudita, Yuichi Manaka</p>
+            <a href="https://doi.org/10.1021/acssuschemeng.9b02172" target="_blank" rel="noopener">Read paper ↗</a>
+          </article>
+          <article class="pub">
+            <div class="pub-year">2018 · Green Chemistry</div>
+            <h3>Transformative Reduction of Carbon Dioxide through Organocatalysis with Silanes</h3>
+            <p>Ria Ayu Pramudita, Ken Motokura</p>
+            <a href="https://doi.org/10.1039/C8GC02052C" target="_blank" rel="noopener">Read paper ↗</a>
+          </article>
+        </div>
+        <div class="cta-row" style="margin-top:28px">
+          <a class="btn" style="border-color:#a7c5b9;color:#e8eee9" href="https://scholar.google.com/citations?hl=en&user=iu-o_awAAAAJ" target="_blank" rel="noopener">View Google Scholar ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">04 / Projects</div>
+            <h2>From research to things people can use.</h2>
+          </div>
+          <p class="intro">A selection of digital projects that connect science, education, and technology.</p>
+        </div>
+        <div class="projects">
+          <article class="project featured">
+            <div class="kicker">Featured</div>
+            <h3>STEM Playground</h3>
+            <p>A collection of educational games and resources for children and adults who enjoy math and science, evolving from a simple HTML/JS project into a React-based platform.</p>
+            <a class="project-link" href="https://stemplayv3.netlify.app/" target="_blank" rel="noopener">Visit project ↗</a>
+          </article>
+          <div style="display:grid;gap:20px">
+            <article class="project">
+              <div class="kicker">Chemical Engineering</div>
+              <h3 style="font-size:1.55rem;margin-top:24px">ChemEPortal</h3>
+              <p>A developing one-stop resource for chemical engineering students and professionals.</p>
+              <a class="project-link" href="https://www.chemeportal.com/" target="_blank" rel="noopener">Explore ↗</a>
+            </article>
+            <article class="project">
+              <div class="kicker">Education</div>
+              <h3 style="font-size:1.55rem;margin-top:24px">ChemE Kids</h3>
+              <p>Games and curated learning resources connecting children with math, science, and languages.</p>
+              <a class="project-link" href="https://kids.chemeportal.com/" target="_blank" rel="noopener">Explore ↗</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <div class="kicker">05 / Contact</div>
+        <h2>Interested in research, collaboration, or building something useful?</h2>
+        <p>For professional inquiries, research conversations, or collaborations, feel free to get in touch.</p>
+        <div class="cta-row" style="justify-content:center">
+          <a class="btn primary" href="mailto:dita@riaayupramudita.com">dita@riaayupramudita.com</a>
+          <a class="btn" href="https://www.linkedin.com/in/ria-ayu-pramudita/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 Ria Ayu Pramudita</span>
+      <span>Research · Chemistry · Technology</span>
+    </div>
+  </footer>
+</body>
+</html>
