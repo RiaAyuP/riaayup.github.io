@@ -1,149 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GT-TNFSPH4F"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'GT-TNFSPH4F');
-    </script>
-    <!-- End Google Tag Manager -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Ria Ayu Pramudita</title>
-    <link rel="canonical" href="https://riaayupramudita.com/about.html">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        @media (min-width: 768px) {
-            .content-wrapper {
-                display: flex;
-                height: calc(100vh - 4rem);
-            }
-            .left-column {
-                width: 33.333%;
-                position: fixed;
-                overflow-y: auto;
-            }
-            .right-column {
-                width: 66.666%;
-                margin-left: 33.333%;
-                overflow-y: auto;
-            }
-        }
-        @media (max-width: 767px) {
-            .content-wrapper {
-                flex-direction: column;
-            }
-            .left-column, .right-column {
-                width: 100%;
-                position: static;
-                overflow-y: visible;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Ria Ayu Pramudita</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen bg-white text-black flex flex-col">
-    <header class="sticky top-0 z-10 bg-white border-b border-gray-200">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="inline-block">
-                <img src="assets/rap-logo.svg" alt="Ria Ayu Pramudita Logo" class="h-8" />
-              </a>
-            <ul class="flex space-x-4">
-                <li><a href="index.html" class="text-black hover:text-pink-600 transition-colors">Home</a></li>
-                <li><a href="about.html" class="text-black hover:text-pink-600 transition-colors">About</a></li>
-                <li><a href="publication.html" class="text-black hover:text-pink-600 transition-colors">Publications</a></li>
-                <li><a href="https://blog.riaayupramudita.com/" class="text-black hover:text-pink-600 transition-colors">Blog</a></li>
-                <li><a href="tool.html" class="text-black hover:text-pink-600 transition-colors">Tools</a></li>
-            </ul>
-        </nav>
-    </header>
+<body>
+<a class="skip" href="#main">Skip to content</a>
 
-    <main class="flex-grow container mx-auto">
-        <div class="content-wrapper">
-            <div class="left-column p-4">
-                <div class="space-y-6 flex flex-col items-center text-center">
-                    <img src="assets/profile-about-1.jpg" alt="Profile Picture of Ria Ayu Pramudita" width="250" height="250" class="rounded-full">
-                    <div>
-                        <h1 class="text-3xl font-bold mb-2">Ria Ayu Pramudita</h1>
-                        <div class="flex justify-center space-x-4 mb-6">
-                            <a href="https://scholar.google.com/citations?hl=en&user=iu-o_awAAAAJ" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="ai ai-google-scholar"></i></a>
-                            <a href="https://www.linkedin.com/in/ria-ayu-pramudita/" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-linkedin"></i></a>
-                            <a href="https://www.threads.net/@riaayupramudita_" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-threads"></i></a>
-                            <a href="https://github.com/RiaAyuP" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-github"></i></a>
-                            <a href="https://instagram.com/riaayupramudita_" target="_blank" rel="noopener noreferrer" class="btn-icon"><i class="fa-brands fa-instagram"></i></a>
-                        </div>
-                        <p class="text-gray-800 mb-6"><i class="fas fa-envelope mr-2"></i> dita@riaayupramudita.com</p>
-                        <button class="btn-outline" id="downloadBtn">
-                            <i class="fas fa-file-pdf mr-2"></i> Download CV as PDF
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="right-column p-4">
-                <section id="education" class="mb-12">
-                    <h2 class="text-2xl font-bold mb-4">Education</h2>
-                    <ul class="space-y-4">
-                        <li class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="text-xl font-semibold">Doctor of Engineering in Chemical Engineering</h3>
-                            <p>Tokyo Institute of Technology, Japan (2017-2020)</p>
-                        </li>
-                        <li class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="text-xl font-semibold">Master of Engineering in Chemical Engineering</h3>
-                            <p>Hongik University, South Korea (2013-2015)</p>
-                        </li>
-                        <li class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="text-xl font-semibold">Bachelor of Science in Chemical Engineering</h3>
-                            <p>Institut Teknologi Bandung, Indonesia (2009-2013)</p>
-                        </li>
-                    </ul>
-                </section>
+<header class="site-header">
+  <nav class="wrap" aria-label="Primary">
+    <a class="brand" href="index.html">Ria Ayu Pramudita</a>
+    <input id="navcheck" class="navcheck" type="checkbox" aria-hidden="true" tabindex="-1">
+    <label for="navcheck" class="navtoggle" aria-label="Toggle menu"><span></span></label>
+    <ul class="navlinks">
+      <li><a href="about.html" aria-current="page">About</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a class="cta-link" href="#contact">Get in touch</a></li>
+    </ul>
+  </nav>
+</header>
 
-                <section id="experience" class="mb-12">
-                    <h2 class="text-2xl font-bold mb-4">Professional Experience</h2>
-                    <ul class="space-y-4">
-                        <li class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="text-xl font-semibold">Post-Doctoral Researcher</h3>
-                            <p>Tokyo Institute of Technology (2020-2021)</p>
-                            <p>I helped research in Motokura-Manaka Laboratory about the development of catalysts to convert carbon dioxide to valuable chemicals with silicon-based reducing agents.</p>
-                        </li>
-                        <li class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="text-xl font-semibold">Senior Staff</h3>
-                            <p>PT Mitsui Indonesia (2015-2017)</p>
-                            <p>The Indonesian office of Japanese trading company Mitsui & Co. Ltd. I entered as the first batch of the Management Trainee program and worked in Accounting and then Energy Division.</p>
-                        </li>
-                        <li class="bg-gray-100 p-4 rounded-lg">
-                            <h3 class="text-xl font-semibold">Reporter</h3>
-                            <p>Kantor Berita ITB (2011-2013)</p>
-                            <p>The official news office of <a href="https://itb.ac.id/news/indeks?page=1"><u>Institut Teknologi Bandung</u></a>. I regularly wrote articles about campus life, research achievements, and academic activities of ITB students and faculty members.</p>
-                        </li>
-                    </ul>
-                </section>
-
-                <section id="skills" class="mb-12">
-                    <h2 class="text-2xl font-bold mb-4">Skills</h2>
-                    <ul class="grid grid-cols-2 gap-4">
-                        <li class="bg-pink-100 p-4 rounded-lg">Chemical Engineering</li>
-                        <li class="bg-pink-100 p-4 rounded-lg">Research Methodology</li>
-                        <li class="bg-pink-100 p-4 rounded-lg">Academic Writing</li>
-                        <li class="bg-pink-100 p-4 rounded-lg">Indonesian, English, Japanese, Korean language</li>
-                        <li class="bg-pink-100 p-4 rounded-lg">AI-assisted Front-End Development (React, Expo)</li>
-                        <li class="bg-pink-100 p-4 rounded-lg">AI-assisted Automation (n8n)</li>
-                    </ul>
-                </section>
-            </div>
+<main id="main">
+  <!-- PAGE HEAD — thesis + portrait meta -->
+  <header class="page-head">
+    <div class="wrap">
+      <div>
+        <span class="mono eyebrow">About</span>
+        <h1>Ten years in the lab,<br><em>now building in the open.</em></h1>
+        <div class="page-head-actions">
+          <a class="btn btn-primary" href="#credentials">View credentials</a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/ria-ayu-pramudita/" target="_blank" rel="noopener">LinkedIn profile →</a>
         </div>
-    </main>
+      </div>
+      <aside class="about-portrait" aria-label="Portrait of Ria Ayu Pramudita">
+        <img src="assets/profile.png" alt="Portrait of Ria Ayu Pramudita" width="640" height="640" loading="eager" decoding="async">
+      </aside>
+    </div>
+  </header>
 
-    <footer class="bg-gray-100 py-4 text-center">
-        <p>&copy; 2025 Ria Ayu Pramudita. All rights reserved.</p>
-    </footer>
+  <!-- EDUCATION -->
+  <section class="journey" id="education" aria-label="Education">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono">Education</span>
+      </div>
+      <div class="edu-grid">
+        <article class="edu-card">
+          <span class="yr">2017 — 2020</span>
+          <h3>Doctor of Engineering in <br>Chemical Engineering</h3>
+          <div class="school">Tokyo Institute of Technology, Japan</div>
+          <span class="loc">Japan · D.Eng</span>
+          <div class="field">Research focus: catalyst development for CO₂ conversion to chemical feedstocks.</div>
+        </article>
+        <article class="edu-card">
+          <span class="yr">2013 — 2015</span>
+          <h3>Master of Engineering in <br>Chemical Engineering</h3>
+          <div class="school">Hongik University, South Korea</div>
+          <span class="loc">South Korea · M.Eng</span>
+          <div class="field">Research focus: CO₂ utilization for enhanced oil recovery (EOR).</div>
+        </article>
+        <article class="edu-card">
+          <span class="yr">2009 — 2013</span>
+          <h3>Bachelor of Science in <br>Chemical Engineering</h3>
+          <div class="school">Institut Teknologi Bandung, Indonesia</div>
+          <span class="loc">Indonesia · B.Sc</span>
+          <div class="field">Undergraduate studies at ITB, the foundation for research and industry that followed.</div>
+        </article>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
+  <!-- PROFESSIONAL EXPERIENCE -->
+  <section class="journey" id="experience" aria-label="Professional experience" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="mono">Professional experience</span>
+      </div>
+      <div class="exp-list">
+        <div class="exp-item is-current">
+          <div class="exp-dot" aria-hidden="true"></div>
+          <article class="exp-card" style="background:var(--ink);border-color:var(--ink);color:var(--paper);">
+            <div class="exp-topline">
+              <h3 style="color:var(--paper);">Building an AI automation practice</h3>
+              <span class="where" style="color:var(--pink);">Independent — in progress</span>
+              <span class="when" style="background:rgba(249,245,242,0.10);border-color:rgba(249,245,242,0.18);color:var(--paper);">2026 — present</span>
+            </div>
+            <p style="color:rgba(249,245,242,0.74);">Applying n8n workflow automation and AI image / video / audio generation into chemical-engineering contexts. Documented openly as it ships.</p>
+            <div class="exp-meta"><span class="chip" style="background:rgba(249,245,242,0.10);border-color:rgba(249,245,242,0.16);color:rgba(249,245,242,0.78);">n8n</span><span class="chip" style="background:rgba(249,245,242,0.10);border-color:rgba(249,245,242,0.16);color:rgba(249,245,242,0.78);">Generative media</span><span class="chip" style="background:rgba(249,245,242,0.10);border-color:rgba(249,245,242,0.16);color:rgba(249,245,242,0.78);">SaaS</span></div>
+          </article>
+        </div>
+        <div class="exp-item is-accent">
+          <div class="exp-dot" aria-hidden="true"></div>
+          <article class="exp-card">
+            <div class="exp-topline">
+              <h3>Post-Doctoral Researcher</h3>
+              <span class="where">Tokyo Institute of Technology</span>
+              <span class="when">2020 — 2021</span>
+            </div>
+            <p>I helped research in <strong>Motokura-Manaka Laboratory</strong> about the development of catalysts to convert carbon dioxide to valuable chemicals with silicon-based reducing agents.</p>
+            <p>Work at the boundary of catalytic chemistry and sustainability — designing systems that return CO₂ to the value chain rather than the atmosphere.</p>
+            <div class="exp-meta"><span class="chip">Catalysis</span><span class="chip">CO₂ utilization</span><span class="chip">Silane chemistry</span></div>
+          </article>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dot" aria-hidden="true"></div>
+          <article class="exp-card">
+            <div class="exp-topline">
+              <h3>Senior Staff — Energy Division</h3>
+              <span class="where">PT Mitsui Indonesia</span>
+              <span class="when">2015 — 2017</span>
+            </div>
+            <p>The Indonesian office of Japanese trading company <strong>Mitsui &amp; Co. Ltd.</strong> I entered as the first batch of the <strong>Management Trainee program</strong> and worked in Accounting and then Energy Division.</p>
+            <p>Exposure to how plant and trading operations actually move — contracts, paperwork, and the quiet cost of manual process that automation now targets.</p>
+            <div class="exp-meta"><span class="chip">Energy operations</span><span class="chip">Management trainee — 1st batch</span><span class="chip">Accounting → Energy</span></div>
+          </article>
+        </div>
+        <div class="exp-item">
+          <div class="exp-dot" aria-hidden="true"></div>
+          <article class="exp-card">
+            <div class="exp-topline">
+              <h3>Reporter</h3>
+              <span class="where">Kantor Berita ITB</span>
+              <span class="when">2011 — 2013</span>
+            </div>
+            <p>The official news office of <strong>Institut Teknologi Bandung</strong>. I regularly wrote articles about campus life, research achievements, and academic activities of ITB students and faculty members.</p>
+            <p>Early training in translating technical work into readable stories — the same muscle now applied to training materials and process explainers.</p>
+            <div class="exp-meta"><span class="chip">Science communication</span><span class="chip">Campus journalism</span></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section class="certs" id="credentials" aria-label="Certifications and continuous learning">
+    <div class="wrap">
+      <div class="certs-head">
+        <div>
+          <span class="mono" style="color:var(--rose);display:block;margin-bottom:10px;">Certifications</span>
+          <h2>Selected credentials</h2>
+        </div>
+      </div>
+      <div class="cert-grid">
+        <article class="cert-card is-verified is-featured">
+          <div class="cert-top">
+            <div class="cert-badge" aria-hidden="true">
+              <svg data-cds="Spark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="21" height="21" fill="var(--cds-clay, #d97757)" class="shrink-0" aria-hidden="true"><path d="m19.6 66.5 19.7-11 .3-1-.3-.5h-1l-3.3-.2-11.2-.3L14 53l-9.5-.5-2.4-.5L0 49l.2-1.5 2-1.3 2.9.2 6.3.5 9.5.6 6.9.4L38 49.1h1.6l.2-.7-.5-.4-.4-.4L29 41l-10.6-7-5.6-4.1-3-2-1.5-2-.6-4.2 2.7-3 3.7.3.9.2 3.7 2.9 8 6.1L37 36l1.5 1.2.6-.4.1-.3-.7-1.1L33 25l-6-10.4-2.7-4.3-.7-2.6c-.3-1-.4-2-.4-3l3-4.2L28 0l4.2.6L33.8 2l2.6 6 4.1 9.3L47 29.9l2 3.8 1 3.4.3 1h.7v-.5l.5-7.2 1-8.7 1-11.2.3-3.2 1.6-3.8 3-2L61 2.6l2 2.9-.3 1.8-1.1 7.7L59 27.1l-1.5 8.2h.9l1-1.1 4.1-5.4 6.9-8.6 3-3.5L77 13l2.3-1.8h4.3l3.1 4.7-1.4 4.9-4.4 5.6-3.7 4.7-5.3 7.1-3.2 5.7.3.4h.7l12-2.6 6.4-1.1 7.6-1.3 3.5 1.6.4 1.6-1.4 3.4-8.2 2-9.6 2-14.3 3.3-.2.1.2.3 6.4.6 2.8.2h6.8l12.6 1 3.3 2 1.9 2.7-.3 2-5.1 2.6-6.8-1.6-16-3.8-5.4-1.3h-.8v.4l4.6 4.5 8.3 7.5L89 80.1l.5 2.4-1.3 2-1.4-.2-9.2-7-3.6-3-8-6.8h-.5v.7l1.8 2.7 9.8 14.7.5 4.5-.7 1.4-2.6 1-2.7-.6-5.8-8-6-9-4.7-8.2-.5.4-2.9 30.2-1.3 1.5-3 1.2-2.5-2-1.4-3 1.4-6.2 1.6-8 1.3-6.4 1.2-7.9.7-2.6v-.2H49L43 72l-9 12.3-7.2 7.6-1.7.7-3-1.5.3-2.8L24 86l10-12.8 6-7.9 4-4.6-.1-.5h-.3L17.2 77.4l-4.7.6-2-2 .2-3 1-1 8-5.5Z"></path></svg>
+            </div>
+          </div>
+          <h3>Claude 101</h3>
+          <div class="issuer">Claude Academy (Anthropic)</div>
+          <div class="meta"><span>Issued 2026</span><span class="sep"></span></div>
+          <div class="cert-verify">
+            <a href="https://academy.claude.com/badges/6fe87bb9-2318-48cb-a2de-c677c4bf260d" target="_blank" rel="noopener">Verify credential</a>
+          </div>
+        </article>
+        <article class="cert-card is-verified is-featured">
+          <div class="cert-top">
+            <div class="cert-badge" aria-hidden="true">
+              <img src="https://www.hacktiv8.com/_next/image?url=%2Flogo.png&w=3840&q=75">
+            </div>
+          </div>
+          <h3>AI Productivity and AI API Integration for Developers</h3>
+          <div class="issuer">Hactiv8</div>
+          <div class="meta"><span>Issued 2026</span><span class="sep"></span></div>
+          <div class="cert-verify">
+            <a href="https://students.hacktiv8.com/certificates/6917a3ad-e432-4718-aad6-e6a3bd0b8fd6" target="_blank" rel="noopener">Verify credential</a>
+          </div>
+        </article>
+        <article class="cert-card is-verified is-featured">
+          <div class="cert-top">
+            <div class="cert-badge" aria-hidden="true">
+              <img src="https://www.hacktiv8.com/_next/image?url=%2Flogo.png&w=3840&q=75">
+            </div>
+          </div>
+          <h3>AI for Work &amp; Career Readiness with Google AI Products</h3>
+          <div class="issuer">Hactiv8</div>
+          <div class="meta"><span>Issued 2026</span><span class="sep"></span></div>
+          <div class="cert-verify">
+            <a href="https://students.hacktiv8.com/certificates/d94e8171-d747-4c23-83b0-0cf0257aff9b" target="_blank" rel="noopener">Verify credential</a>
+          </div>
+        </article>
+        <article class="cert-card is-verified is-featured">
+          <div class="cert-top">
+            <div class="cert-badge" aria-hidden="true">
+              <img src="https://www.kaggle.com/static/images/logos/kaggle-logo-transparent.svg">
+            </div>
+          </div>
+          <h3>Pandas</h3>
+          <div class="issuer">Kaggle</div>
+          <div class="meta"><span>Issued 2024</span><span class="sep"></span></div>
+          <div class="cert-verify">
+            <a href="https://www.kaggle.com/learn/certification/riaayupramudita/pandas" target="_blank" rel="noopener">Verify credential</a>
+          </div>
+        </article>
+        <article class="cert-card is-verified is-featured">
+          <div class="cert-top">
+            <div class="cert-badge" aria-hidden="true">
+              <img src="https://www.kaggle.com/static/images/logos/kaggle-logo-transparent.svg">
+            </div>
+          </div>
+          <h3>Python</h3>
+          <div class="issuer">Kaggle</div>
+          <div class="meta"><span>Issued 2024</span><span class="sep"></span></div>
+          <div class="cert-verify">
+            <a href="https://www.kaggle.com/learn/certification/riaayupramudita/python" target="_blank" rel="noopener">Verify credential</a>
+          </div>
+          </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact" aria-label="Contact">
+    <div class="wrap">
+      <div>
+        <h2>Following along, or have a process worth automating?</h2>
+        <p>I’m posting builds as I make them — no polished case studies yet, just the actual work. If something here is relevant to your team, I’d like to hear about it.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="mailto:dita@riaayupramudita.com">Email dita@riaayupramudita.com</a>
+        <a class="btn btn-ghost" href="https://riaayupramudita.substack.com/">Follow the build on Substack</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">&copy; <span id="year"></span> Ria Ayu Pramudita</span>
+  </div>
+</footer>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>

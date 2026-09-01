@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ria Ayu Pramudita — Chemical Engineer, Building an AI Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#122A2E;
+    --ink-2:#1B3A3F;
+    --paper:#F1EEE2;
+    --paper-2:#E7E3D3;
+    --pink:#E8577F;
+    --amber:#E3A23C;
+    --line:#7C8B86;
+    --line-soft:rgba(124,139,134,0.35);
+    --paper-line:rgba(18,42,46,0.14);
+    --max:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans',sans-serif;
+    font-size:16px;
+    line-height:1.58;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Newsreader',serif;
+    font-weight:500;
+    margin:0;
+    letter-spacing:-0.02em;
+    font-optical-sizing:auto;
+  }
+  .mono{
+    font-family:'Fragment Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-size:12px;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;}
+  :focus-visible{outline:2px solid var(--pink);outline-offset:3px;}
+
+  /* NAV */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(241,238,226,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--paper-line);
+  }
+  nav.wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:64px;
+  }
+  .brand{
+    font-family:'Newsreader',serif;font-size:19px;font-weight:500;
+    text-decoration:none;
+  }
+  .navlinks{display:flex;gap:28px;list-style:none;margin:0;padding:0;}
+  .navlinks a{
+    text-decoration:none;font-size:14px;font-weight:500;color:var(--ink);
+    padding:4px 2px;border-bottom:1px solid transparent;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .navlinks a:hover{border-color:var(--pink);}
+  .navlinks .cta-link{
+    background:var(--ink);color:var(--paper);
+    padding:8px 16px;border-radius:2px;border-bottom:none;
+  }
+  .navlinks .cta-link:hover{background:var(--pink);}
+  .navtoggle{display:none;}
+
+  /* HERO */
+  .hero{
+    background:var(--ink);
+    color:var(--paper);
+    position:relative;
+    overflow:hidden;
+    padding:72px 0 0;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:48px;
+    align-items:center;
+  }
+  .hero-eyebrow{color:var(--amber);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+  .hero-eyebrow::before{
+    content:"";width:7px;height:7px;border-radius:50%;background:var(--amber);
+    box-shadow:0 0 0 3px rgba(227,162,60,0.25);
+  }
+  .hero h1{font-size:clamp(38px,5vw,58px);color:var(--paper);line-height:1.02;letter-spacing:-0.025em;}
+  .hero .role{
+    font-family:'Newsreader',serif;font-style:italic;font-weight:400;
+    color:var(--pink);font-size:clamp(18px,2vw,22px);margin-top:10px;
+  }
+  .hero p.lede{
+    max-width:46ch;margin-top:20px;font-size:16.5px;
+    color:rgba(241,238,226,0.82);
+  }
+  .hero-photo-row{display:flex;align-items:center;gap:16px;margin-top:32px;}
+  .hero-photo{
+    width:56px;height:56px;border-radius:50%;object-fit:cover;
+    border:1px solid rgba(241,238,226,0.35);
+  }
+  .hero-links{display:flex;gap:16px;flex-wrap:wrap;}
+  .hero-links a{
+    font-size:13px;color:rgba(241,238,226,0.7);text-decoration:none;
+    border-bottom:1px solid rgba(241,238,226,0.25);
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .hero-links a:hover{color:var(--pink);border-color:var(--pink);}
+
+  /* FLOW DIAGRAM (signature element) */
+  .flow{position:relative;}
+  .flow svg{width:100%;height:auto;overflow:visible;}
+  .flow-path{
+    fill:none;stroke:var(--line-soft);stroke-width:1.5;
+  }
+  .flow-path.active{stroke:var(--pink);stroke-dasharray:6 5;}
+  .node-dot{fill:var(--paper);stroke:var(--line);stroke-width:1.5;}
+  .node-dot.current{fill:var(--ink);stroke:var(--pink);stroke-width:2;}
+  .pulse{
+    fill:none;stroke:var(--pink);stroke-width:1.5;opacity:0;
+    transform-origin:center;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .pulse{animation:pulse 2.2s ease-out infinite;}
+  }
+  @keyframes pulse{
+    0%{opacity:0.9;stroke-width:2;}
+    100%{opacity:0;stroke-width:10;}
+  }
+  .node-label{
+    font-family:'Fragment Mono',monospace;font-size:10.5px;
+    fill:rgba(241,238,226,0.68);
+  }
+  .node-label.current{fill:var(--pink);font-weight:400;}
+  .node-sub{font-family:'Fragment Mono',monospace;font-size:8.5px;fill:rgba(241,238,226,0.4);}
+
+  /* LOG / CURRENTLY */
+  .currently{padding:64px 0 56px;border-bottom:1px solid var(--paper-line);}
+  .currently-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px;}
+  .currently-head h2{font-size:26px;}
+  .date-tag{color:var(--line);white-space:nowrap;}
+  .log-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--paper-line);border:1px solid var(--paper-line);}
+  .log-item{background:var(--paper);padding:22px 22px 24px;}
+  .log-item .mono{color:var(--pink);margin-bottom:10px;display:block;}
+  .log-item p{margin:0;font-size:14.5px;color:rgba(18,42,46,0.85);}
+
+  /* WHAT I DO */
+  .offer{padding:72px 0;}
+  .section-head{max-width:56ch;margin-bottom:40px;}
+  .section-head .mono{color:var(--pink);margin-bottom:12px;display:block;}
+  .section-head h2{font-size:32px;}
+  .offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--paper-line);}
+  .offer-card{
+    padding:28px 24px 30px;border-right:1px solid var(--paper-line);border-bottom:1px solid var(--paper-line);
+  }
+  .offer-card:last-child{border-right:none;}
+  .offer-card .num{font-family:'Fragment Mono',monospace;font-size:12px;color:var(--amber);margin-bottom:16px;display:block;}
+  .offer-card h3{font-size:19px;margin-bottom:10px;}
+  .offer-card p{font-size:14.5px;color:rgba(18,42,46,0.72);margin:0;}
+
+  /* CREDENTIALS STRIP */
+  .creds{background:var(--paper-2);padding:56px 0;}
+  .creds .wrap{display:grid;grid-template-columns:280px 1fr;gap:40px;}
+  .creds h2{font-size:24px;margin-bottom:14px;}
+  .creds p.intro{font-size:14.5px;color:rgba(18,42,46,0.7);margin:0 0 18px;}
+  .creds a.more{font-size:13.5px;text-decoration:underline;text-decoration-color:var(--pink);text-underline-offset:3px;}
+  .cred-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:16px 32px;}
+  .cred-list li{border-left:2px solid var(--line-soft);padding-left:14px;}
+  .cred-list .role{font-size:14px;font-weight:600;}
+  .cred-list .org{font-size:13px;color:rgba(18,42,46,0.65);}
+  .cred-list .yr{font-family:'Fragment Mono',monospace;font-size:11px;color:var(--line);margin-top:2px;}
+
+  /* PROJECTS */
+  .projects{padding:72px 0;}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .proj-card{
+    border:1px solid var(--paper-line);padding:26px;position:relative;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .proj-card:hover{border-color:var(--pink);transform:translateY(-2px);}
+  .proj-card .mono{color:var(--line);margin-bottom:14px;display:block;}
+  .proj-card h3{font-size:20px;margin-bottom:10px;}
+  .proj-card p{font-size:14.5px;color:rgba(18,42,46,0.72);margin:0 0 18px;}
+  .proj-card a.view{font-size:13.5px;font-weight:600;text-decoration:none;color:var(--pink);}
+  .proj-card a.view::after{content:" →";}
+
+  /* CTA */
+  .cta{background:var(--ink);color:var(--paper);padding:80px 0;}
+  .cta .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:32px;align-items:end;}
+  .cta h2{color:var(--paper);font-size:clamp(28px,3.4vw,40px);max-width:16ch;}
+  .cta p{color:rgba(241,238,226,0.72);max-width:42ch;margin-top:14px;font-size:15px;}
+  .cta-actions{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .btn{
+    display:inline-block;padding:13px 22px;font-family:'Fragment Mono',monospace;
+    font-size:13px;text-decoration:none;letter-spacing:0.03em;
+  }
+  .btn-primary{background:var(--pink);color:var(--ink);}
+  .btn-primary:hover{background:var(--amber);}
+  .btn-ghost{color:rgba(241,238,226,0.75);border-bottom:1px solid rgba(241,238,226,0.3);padding:0;}
+  .btn-ghost:hover{color:var(--pink);border-color:var(--pink);}
+
+  footer{padding:28px 0;border-top:1px solid var(--paper-line);}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  footer .mono{color:var(--line);}
+  .foot-links{display:flex;gap:18px;list-style:none;padding:0;margin:0;}
+  .foot-links a{font-size:13px;text-decoration:none;color:var(--line);}
+  .foot-links a:hover{color:var(--pink);}
+
+  @media (max-width:860px){
+    .hero .wrap{grid-template-columns:1fr;gap:36px;}
+    .navlinks{display:none;}
+    .log-grid{grid-template-columns:1fr;}
+    .offer-grid{grid-template-columns:1fr;}
+    .offer-card{border-right:none;}
+    .creds .wrap{grid-template-columns:1fr;}
+    .cred-list{grid-template-columns:1fr;}
+    .proj-grid{grid-template-columns:1fr;}
+    .cta .wrap{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">Ria Ayu Pramudita</a>
+    <ul class="navlinks">
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/publication.html">Publications</a></li>
+      <li><a href="https://blog.riaayupramudita.com/">Blog</a></li>
+      <li><a href="/tool.html">Tools</a></li>
+      <li><a class="cta-link" href="#contact">Get in touch</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="hero-eyebrow mono">Portfolio in progress — updated openly</div>
+      <h1>Ria Ayu Pramudita</h1>
+      <div class="role">Chemical engineer, building an AI automation practice</div>
+      <p class="lede">D.Eng in Chemical Engineering. Five years focused on raising my kids. Now applying what I've learned since — n8n, AI content generation — back into the field I trained in. This site tracks that build, in the open.</p>
+      <div class="hero-photo-row">
+        <img class="hero-photo" src="https://riaayupramudita.com/assets/profile.jpg" alt="Portrait of Ria Ayu Pramudita">
+        <div class="hero-links">
+          <a href="https://www.linkedin.com/in/ria-ayu-pramudita/">LinkedIn</a>
+          <a href="https://github.com/RiaAyuP">GitHub</a>
+          <a href="https://scholar.google.com/citations?hl=en&user=iu-o_awAAAAJ">Scholar</a>
+          <a href="https://www.threads.net/@riaayupramudita_">Threads</a>
+          <a href="https://instagram.com/riaayupramudita_">Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow" aria-label="Career path diagram: chemical engineering education through to AI consulting, currently in progress">
+      <svg viewBox="0 0 360 480" xmlns="http://www.w3.org/2000/svg">
+        <path class="flow-path" d="M180 30 L180 100" />
+        <path class="flow-path" d="M180 100 L180 170" />
+        <path class="flow-path" d="M180 170 L180 240" />
+        <path class="flow-path" d="M180 240 L180 310" />
+        <path class="flow-path active" d="M180 310 L180 390" />
+
+        <circle class="node-dot" cx="180" cy="30" r="5"/>
+        <text class="node-label" x="196" y="26">B.Sc, Chemical Engineering</text>
+        <text class="node-sub" x="196" y="38">Institut Teknologi Bandung · 2013</text>
+
+        <circle class="node-dot" cx="180" cy="100" r="5"/>
+        <text class="node-label" x="196" y="96">M.Eng, Chemical Engineering</text>
+        <text class="node-sub" x="196" y="108">Hongik University · 2015</text>
+
+        <circle class="node-dot" cx="180" cy="170" r="5"/>
+        <text class="node-label" x="196" y="166">D.Eng, Chemical Engineering</text>
+        <text class="node-sub" x="196" y="178">Tokyo Institute of Technology · 2020</text>
+
+        <circle class="node-dot" cx="180" cy="240" r="5"/>
+        <text class="node-label" x="196" y="236">Postdoc → 5 years, full-time parenting</text>
+        <text class="node-sub" x="196" y="248">2020 – 2025</text>
+
+        <circle class="node-dot" cx="180" cy="310" r="5"/>
+        <text class="node-label" x="196" y="306">Learning n8n + AI generation tools</text>
+        <text class="node-sub" x="196" y="318">2025 – present</text>
+
+        <circle class="pulse" cx="180" cy="390" r="8"/>
+        <circle class="node-dot current" cx="180" cy="390" r="6"/>
+        <text class="node-label current" x="196" y="386">AI automation consultant</text>
+        <text class="node-sub" x="196" y="398">in progress — building portfolio now</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="currently">
+  <div class="wrap">
+    <div class="currently-head">
+      <h2>Currently</h2>
+      <span class="mono date-tag">Log updated Aug 2026</span>
+    </div>
+    <div class="log-grid">
+      <div class="log-item">
+        <span class="mono">Learning</span>
+        <p>n8n workflow automation, and AI image, video, and audio generation — planning through post-processing.</p>
+      </div>
+      <div class="log-item">
+        <span class="mono">Building</span>
+        <p>First portfolio workflows: automating chemical-engineering documents like SDS extraction and lab report summaries.</p>
+      </div>
+      <div class="log-item">
+        <span class="mono">Open to</span>
+        <p>Small pilot projects and honest feedback from process, lab, and manufacturing teams.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="offer">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="mono">What I'm building toward</span>
+      <h2>Where chemical engineering meets automation</h2>
+    </div>
+    <div class="offer-grid">
+      <div class="offer-card">
+        <span class="num">01</span>
+        <h3>Process &amp; document automation</h3>
+        <p>n8n workflows for the paperwork that eats lab and plant time — SDS extraction, batch record review, SOP drafting.</p>
+      </div>
+      <div class="offer-card">
+        <span class="num">02</span>
+        <h3>Technical content generation</h3>
+        <p>AI image, video, and music production for training material and process explainers — planned and post-processed, not just prompted.</p>
+      </div>
+      <div class="offer-card">
+        <span class="num">03</span>
+        <h3>Domain translation</h3>
+        <p>A D.Eng in chemical engineering means I can read the process behind the request, not just the prompt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="creds">
+  <div class="wrap">
+    <div>
+      <h2>Background</h2>
+      <p class="intro">Ten years across research, industry, and academia before this shift toward AI-driven practice.</p>
+      <a class="more" href="/about.html">Full background & CV →</a>
+    </div>
+    <ul class="cred-list">
+      <li><div class="role">Postdoctoral Researcher</div><div class="org">Tokyo Institute of Technology</div><div class="yr mono">2020–2021</div></li>
+      <li><div class="role">Senior Staff, Energy Division</div><div class="org">PT Mitsui Indonesia</div><div class="yr mono">2015–2017</div></li>
+      <li><div class="role">D.Eng, Chemical Engineering</div><div class="org">Tokyo Institute of Technology</div><div class="yr mono">2017–2020</div></li>
+      <li><div class="role">M.Eng, Chemical Engineering</div><div class="org">Hongik University</div><div class="yr mono">2013–2015</div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="mono">Dev projects</span>
+      <h2>Shipped, not theoretical</h2>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <span class="mono">React 18 · Supabase</span>
+        <h3>APTEKIM.id</h3>
+        <p>Official site for Indonesia's Chemical Engineering Higher Education Association, built bilingual (English / Bahasa Indonesia).</p>
+        <a class="view" href="https://aptekim.id">View project</a>
+      </div>
+      <div class="proj-card">
+        <span class="mono">Education</span>
+        <h3>ChemE Kids</h3>
+        <p>A games site for children exploring math and science, plus a curated set of free learning resources.</p>
+        <a class="view" href="https://kids.chemeportal.com">View project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div>
+      <h2>Following along, or have a process worth automating?</h2>
+      <p>I'm posting builds as I make them — no polished case studies yet, just the actual work. If something here is relevant to your team, I'd like to hear about it.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="mailto:dita@riaayupramudita.com">Email dita@riaayupramudita.com</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/ria-ayu-pramudita/">Follow the build on LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">© 2026 Ria Ayu Pramudita</span>
+    <ul class="foot-links">
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/publication.html">Publications</a></li>
+      <li><a href="https://blog.riaayupramudita.com/">Blog</a></li>
+      <li><a href="/tool.html">Tools</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

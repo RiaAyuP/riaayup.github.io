@@ -1,57 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GT-TNFSPH4F"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'GT-TNFSPH4F');
-    </script>
-    <!-- End Google Tag Manager -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Ria Ayu Pramudita</title>
-    <link rel="canonical" href="https://riaayupramudita.com/about.html">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        @media (min-width: 768px) {
-            .content-wrapper {
-                display: flex;
-                height: calc(100vh - 4rem);
-            }
-            .left-column {
-                width: 33.333%;
-                position: fixed;
-                overflow-y: auto;
-            }
-            .right-column {
-                width: 66.666%;
-                margin-left: 33.333%;
-                overflow-y: auto;
-            }
-        }
-        @media (max-width: 767px) {
-            .content-wrapper {
-                flex-direction: column;
-            }
-            .left-column, .right-column {
-                width: 100%;
-                position: static;
-                overflow-y: visible;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Ria Ayu Pramudita</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div style="max-width: 600px; margin: 0 auto; padding: 10px;">
-  <div class="substack-post-embed"><p lang="en">Hello, World. by Ria Ayu Pramudita</p><p></p><a data-post-link href="https://riaayupramudita.substack.com/p/hello-world">Read on Substack</a></div><script async src="https://substack.com/embedjs/embed.js" charset="utf-8"></script>
-</div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="wrap" aria-label="Primary">
+    <a class="brand" href="index.html">Ria Ayu Pramudita</a>
+    <input id="navcheck" class="navcheck" type="checkbox" aria-hidden="true" tabindex="-1">
+    <label for="navcheck" class="navtoggle" aria-label="Toggle menu"><span></span></label>
+    <ul class="navlinks">
+      <li><a href="about.html">About</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="blog.html" aria-current="page">Blog</a></li>
+      <li><a class="cta-link" href="about.html#contact">Get in touch</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <header class="page-head proj-head">
+    <div class="wrap">
+      <div class="page-head-copy">
+        <span class="mono eyebrow">Blog</span>
+        <h1>Documentations on how <br><em>I build with AI.</em></h1>
+      </div>
+    </div>
+  </header>
+
+  <section class="posts" aria-label="Latest posts">
+    <div class="wrap">
+      <div class="posts-head">
+        <h2>Latest posts</h2>
+        <span class="mono count" id="post-count" aria-live="polite"></span>
+      </div>
+      <div id="status" class="status" role="status" aria-live="polite">Loading latest posts…</div>
+      <div id="post-list" class="post-list" aria-live="polite"></div>
+      <div class="archive-row">
+        <a class="archive-link" href="https://riaayupramudita.substack.com" target="_blank" rel="noopener">Read the full archive on Substack →</a>
+        <span class="archive-note">Opens riaayupramudita.substack.com</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">&copy; <span id="year"></span> Ria Ayu Pramudita</span>
+  </div>
+</footer>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+<script>
+  const FEED_URL = "https://riaayupramudita.substack.com/feed";
+  const POST_COUNT = 5;
+
+  // Substack's RSS feed doesn't send CORS headers, so a direct browser fetch()
+  // is blocked. RSS2JSON fetches the feed server-side and hands back CORS-friendly
+  // JSON, so this static page can read it client-side with no backend of its own.
+  const PROXY_URL = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(FEED_URL);
+
+  const statusEl = document.getElementById('status');
+  const listEl = document.getElementById('post-list');
+  const countEl = document.getElementById('post-count');
+
+  function formatDate(pubDate){
+    const d = new Date(pubDate);
+    if(isNaN(d)) return "";
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function stripHtml(html){
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return (tmp.textContent || tmp.innerText || "").trim();
+  }
+
+  function truncate(str, max = 220){
+    if(!str) return "";
+    return str.length > max ? str.slice(0, max).trim() + "…" : str;
+  }
+
+  function renderPosts(items){
+    listEl.innerHTML = "";
+    const shown = items.slice(0, POST_COUNT);
+    countEl.textContent = shown.length ? String(shown.length).padStart(2,'0') + " shown" : "";
+    shown.forEach((item, i) => {
+      const title = item.title || "Untitled";
+      const link = item.link || "#";
+      const pubDate = item.pubDate || "";
+      // Prefer the plain description; fall back to stripped content if needed.
+      const description = truncate(stripHtml(item.description || item.content || ""));
+
+      const card = document.createElement('a');
+      card.className = 'post-card';
+      card.href = link;
+      card.target = '_blank';
+      card.rel = 'noopener';
+
+      card.innerHTML = `
+        <div class="post-meta">
+          <span>${formatDate(pubDate)}</span>
+          <span class="dot" aria-hidden="true"></span>
+          <span>${String(i + 1).padStart(2, '0')} / ${String(shown.length).padStart(2, '0')}</span>
+        </div>
+        <h2>${title}</h2>
+        <p>${description}</p>
+        <span class="read-more">Read post →</span>
+      `;
+
+      listEl.appendChild(card);
+    });
+  }
+
+  async function loadFeed(){
+    try{
+      const res = await fetch(PROXY_URL);
+      if(!res.ok) throw new Error("Network response was not ok");
+      const data = await res.json();
+
+      if(data.status !== 'ok' || !Array.isArray(data.items)) {
+        throw new Error(data.message || "Failed to parse feed");
+      }
+      if(data.items.length === 0) throw new Error("No posts found in feed");
+
+      statusEl.style.display = 'none';
+      renderPosts(data.items);
+    } catch(err){
+      statusEl.textContent = "Couldn't load posts right now — read the latest on Substack instead.";
+      statusEl.classList.add('error');
+    }
+  }
+
+  loadFeed();
+</script>
 
 </body>
 </html>
