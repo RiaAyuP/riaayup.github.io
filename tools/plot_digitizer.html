@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plot Digitizer</title>
+<style>
+  :root{
+    --bg: #EDF1F3;
+    --panel: #FFFFFF;
+    --ink: #17212B;
+    --muted: #5C6B79;
+    --line: #D6DEE3;
+    --accent: #0E7C86;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #E3F1F1;
+    --warn: #B5450C;
+    --warn-soft: #FBEAE0;
+    --marker: #00B7D6;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, "Segoe UI", ui-sans-serif, system-ui, Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:14px; line-height:1.5;
+  }
+  header{
+    padding:20px 28px 16px; border-bottom:1px solid var(--line);
+    background:var(--panel);
+  }
+  header h1{ margin:0 0 4px; font-size:20px; font-weight:700; letter-spacing:-0.01em; }
+  header p{ margin:0; color:var(--muted); max-width:640px; }
+  .layout{
+    display:grid; grid-template-columns: minmax(0,1.5fr) 400px;
+    gap:20px; padding:20px 28px 40px; align-items:start;
+  }
+  @media (max-width: 980px){ .layout{ grid-template-columns:1fr; } }
+
+  .stage{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:16px; position:sticky; top:20px;
+  }
+  .stage-toolbar{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:10px; gap:12px; flex-wrap:wrap;
+  }
+  .status{
+    font-family:var(--mono); font-size:12.5px; color:var(--accent);
+    background:var(--accent-soft); border:1px solid #BFDFDF; border-radius:6px;
+    padding:6px 10px; flex:1; min-width:220px;
+  }
+  .status.warn{ color:var(--warn); background:var(--warn-soft); border-color:#EBC7A9; }
+  .canvas-wrap{
+    position:relative; width:100%; overflow:auto; text-align:center; background:
+      repeating-conic-gradient(#f4f6f7 0% 25%, #fff 0% 50%) 50% / 16px 16px;
+    border:1px dashed var(--line); border-radius:6px;
+    min-height:200px; padding:8px;
+  }
+  .canvas-inner{ position:relative; display:inline-block; max-width:100%; }
+  #baseCanvas{ display:block; max-width:100%; height:auto; }
+  #overlayCanvas{ position:absolute; left:0; top:0; width:100%; height:100%; cursor:crosshair; }
+  .empty-state{ color:var(--muted); font-size:13px; text-align:center; padding:40px; }
+  .drop-hint{ font-family:var(--mono); font-size:12px; color:var(--muted); margin-top:8px; }
+
+  .sidebar{ display:flex; flex-direction:column; gap:12px; }
+  .step{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:14px 16px;
+  }
+  .step.disabled{ opacity:0.45; pointer-events:none; }
+  .step-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .step-num{
+    width:22px; height:22px; border-radius:50%; background:var(--ink); color:#fff;
+    font-family:var(--mono); font-size:12px; display:flex; align-items:center;
+    justify-content:center; flex-shrink:0;
+  }
+  .step-title{ font-weight:600; font-size:14px; }
+  .step-body{ margin-left:32px; display:flex; flex-direction:column; gap:8px; }
+  .row{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  label.inline{ font-size:12.5px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+
+  button{
+    font-family:var(--sans); font-size:13px; font-weight:600; cursor:pointer;
+    border-radius:6px; border:1px solid var(--line); background:#fff; color:var(--ink);
+    padding:7px 12px; transition:background .12s, border-color .12s;
+  }
+  button:hover{ background:#F5F7F8; }
+  button.primary{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  button.primary:hover{ background:#000; }
+  button.accent{ background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  button.accent:hover{ background:#0B646C; }
+  button.ghost{ background:transparent; border-color:transparent; color:var(--muted); padding:4px 6px; }
+  button.ghost:hover{ background:#EEF2F3; color:var(--ink); }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+  button.active-mode{ outline:2px solid var(--marker); outline-offset:1px; }
+
+  input[type=text], input[type=number]{
+    font-family:var(--mono); font-size:12.5px; border:1px solid var(--line);
+    border-radius:5px; padding:6px 8px; width:90px; background:#fff; color:var(--ink);
+  }
+  input[type=text]{ width:140px; }
+  input[type=range]{ width:100px; accent-color:var(--accent); }
+  input:focus-visible, button:focus-visible{ outline:2px solid var(--marker); outline-offset:2px; }
+
+  .calib-summary{
+    font-family:var(--mono); font-size:12px; color:var(--muted);
+    background:#F7F9FA; border:1px solid var(--line); border-radius:5px; padding:6px 8px;
+  }
+  .series-item{
+    border:1px solid var(--line); border-radius:6px; padding:8px 10px;
+    display:flex; flex-direction:column; gap:6px; background:#FCFDFD;
+  }
+  .series-item-head{ display:flex; align-items:center; gap:8px; }
+  .swatch{ width:14px; height:14px; border-radius:3px; flex-shrink:0; border:1px solid rgba(0,0,0,.15); }
+  .series-name{ font-weight:600; font-size:13px; flex:1; }
+  .series-meta{ font-family:var(--mono); font-size:11px; color:var(--muted); }
+  .tol-row{ display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--muted); }
+
+  .rect-item{
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:11.5px; color:var(--muted);
+    border:1px dashed var(--line); border-radius:5px; padding:4px 8px;
+  }
+  .hint{ font-size:12px; color:var(--muted); }
+  .divider{ height:1px; background:var(--line); margin:4px 0; }
+  #previewCanvas{ width:100%; height:140px; border:1px solid var(--line); border-radius:6px; background:#fff; }
+  footer{ padding:16px 28px 36px; color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Plot Digitizer</h1>
+  <p>Trace curves off a chart image and export the underlying (x, y) data as a CSV. Everything runs locally in this page — the image is never uploaded anywhere.</p>
+</header>
+
+<div class="layout">
+
+  <div class="stage">
+    <div class="stage-toolbar">
+      <div class="status" id="statusLine">Load an image to begin.</div>
+      <button id="loadBtn">Load image…</button>
+      <input type="file" id="fileInput" accept="image/*" style="display:none">
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="empty-state" id="emptyState">No image loaded yet.<br><span class="drop-hint">Click "Load image…" or drag a file here.</span></div>
+      <div class="canvas-inner" id="canvasInner">
+        <canvas id="baseCanvas" style="display:none"></canvas>
+        <canvas id="overlayCanvas" style="display:none"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+
+    <div class="step" id="stepCrop">
+      <div class="step-head"><div class="step-num">1</div><div class="step-title">Crop the plot area</div></div>
+      <div class="step-body">
+        <p class="hint">Drag a box around just the axes/curves, leaving out titles and outer labels. This keeps text from confusing the curve tracer.</p>
+        <div class="row">
+          <button id="cropBtn">Draw crop box</button>
+          <button id="cropReset" class="ghost">Reset</button>
+        </div>
+        <div class="calib-summary" id="cropSummary">Not set — full image will be used.</div>
+      </div>
+    </div>
+
+    <div class="step" id="stepX">
+      <div class="step-head"><div class="step-num">2</div><div class="step-title">Calibrate X axis</div></div>
+      <div class="step-body">
+        <p class="hint">Click two points on the x-axis whose values you know (e.g. two tick marks), and enter each value.</p>
+        <div class="row">
+          <button id="xCalBtn">Click axis points</button>
+          <button id="xCalReset" class="ghost">Reset</button>
+          <label class="inline"><input type="checkbox" id="xLog"> log scale</label>
+        </div>
+        <div id="xValueForm" class="row" style="display:none">
+          <span class="hint" id="xValueLabel">Value at point 1:</span>
+          <input type="number" id="xValueInput" step="any">
+          <button id="xValueConfirm" class="accent">Set</button>
+        </div>
+        <div class="calib-summary" id="xSummary">Not calibrated.</div>
+      </div>
+    </div>
+
+    <div class="step" id="stepY">
+      <div class="step-head"><div class="step-num">3</div><div class="step-title">Calibrate Y axis</div></div>
+      <div class="step-body">
+        <label class="inline"><input type="checkbox" id="yRelative"> No numeric y-axis — use relative 0–100 scale</label>
+        <div id="yNumericControls">
+          <p class="hint">Click two points on the y-axis whose values you know, and enter each value.</p>
+          <div class="row">
+            <button id="yCalBtn">Click axis points</button>
+            <button id="yCalReset" class="ghost">Reset</button>
+            <label class="inline"><input type="checkbox" id="yLog"> log scale</label>
+          </div>
+          <div id="yValueForm" class="row" style="display:none">
+            <span class="hint" id="yValueLabel">Value at point 1:</span>
+            <input type="number" id="yValueInput" step="any">
+            <button id="yValueConfirm" class="accent">Set</button>
+          </div>
+        </div>
+        <div class="calib-summary" id="ySummary">Not calibrated.</div>
+      </div>
+    </div>
+
+    <div class="step" id="stepTrace">
+      <div class="step-head"><div class="step-num">4</div><div class="step-title">Trace curves</div></div>
+      <div class="step-body">
+        <div class="row">
+          <input type="text" id="newSeriesName" placeholder="Curve name">
+          <button id="addSeriesBtn" class="accent">Add curve — pick its color</button>
+        </div>
+        <div id="seriesList" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+        <div class="divider"></div>
+        <p class="hint">If a label or legend sits on top of a curve and gets picked up, exclude that region:</p>
+        <div class="row">
+          <button id="excludeBtn">Draw exclude box</button>
+        </div>
+        <div id="excludeList" style="display:flex; flex-direction:column; gap:4px;"></div>
+      </div>
+    </div>
+
+    <div class="step" id="stepExport">
+      <div class="step-head"><div class="step-num">5</div><div class="step-title">Export</div></div>
+      <div class="step-body">
+        <div class="row">
+          <label class="inline">x-axis column name<input type="text" id="xAxisLabel" value="X" style="width:100px"></label>
+        </div>
+        <div class="row">
+          <label class="inline">resample step<input type="number" id="stepInput" step="any" placeholder="auto"></label>
+        </div>
+        <canvas id="previewCanvas" width="700" height="140"></canvas>
+        <div class="row">
+          <button id="previewBtn">Preview chart</button>
+          <button id="downloadBtn" class="primary">Download CSV</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>Tip: click directly on a thick, unambiguous part of a curve when picking its color. If tracing misses part of a curve, lower the tolerance slider on that curve or add an exclude box over whatever is interfering, then it re-traces automatically.</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- State ----------
+  const state = {
+    img:null, natW:0, natH:0, pixelData:null, // Uint8ClampedArray RGBA, full image
+    crop:null, // {x0,y0,x1,y1} in image px, x0<x1,y0<y1
+    xcal:{p1:null,v1:null,p2:null,v2:null,log:false},
+    ycal:{p1:null,v1:null,p2:null,v2:null,log:false,relative:false},
+    series:[], // {id,name,color:[r,g,b],tolerance,points:[[x,y]...],hidden:false}
+    excludeRects:[], // {x0,y0,x1,y1}
+    mode:"idle", // idle|crop-drag|xcal1|xcal2|ycal1|ycal2|pick-color|exclude-drag|xval-wait|yval-wait
+    dragStart:null,
+    pendingSeriesId:null,
+    nextSeriesId:1,
+  };
+
+  // ---------- DOM refs ----------
+  const $ = (id)=>document.getElementById(id);
+  const fileInput = $("fileInput"), loadBtn=$("loadBtn");
+  const canvasWrap=$("canvasWrap"), emptyState=$("emptyState");
+  const baseCanvas=$("baseCanvas"), overlay=$("overlayCanvas");
+  const bctx = baseCanvas.getContext("2d", {willReadFrequently:true});
+  const octx = overlay.getContext("2d");
+  const statusLine=$("statusLine");
+
+  const cropBtn=$("cropBtn"), cropReset=$("cropReset"), cropSummary=$("cropSummary");
+  const xCalBtn=$("xCalBtn"), xCalReset=$("xCalReset"), xSummary=$("xSummary"), xLog=$("xLog");
+  const xValueForm=$("xValueForm"), xValueLabel=$("xValueLabel"), xValueInput=$("xValueInput"), xValueConfirm=$("xValueConfirm");
+  const yRelative=$("yRelative"), yNumericControls=$("yNumericControls");
+  const yCalBtn=$("yCalBtn"), yCalReset=$("yCalReset"), ySummary=$("ySummary"), yLog=$("yLog");
+  const yValueForm=$("yValueForm"), yValueLabel=$("yValueLabel"), yValueInput=$("yValueInput"), yValueConfirm=$("yValueConfirm");
+  const newSeriesName=$("newSeriesName"), addSeriesBtn=$("addSeriesBtn"), seriesList=$("seriesList");
+  const excludeBtn=$("excludeBtn"), excludeList=$("excludeList");
+  const xAxisLabel=$("xAxisLabel"), stepInput=$("stepInput");
+  const previewBtn=$("previewBtn"), downloadBtn=$("downloadBtn");
+  const previewCanvas=$("previewCanvas");
+
+  const PALETTE = ["#0E7C86","#B5450C","#5B3A9C","#1D6F42","#B0225A","#2B4C7E"];
+
+  function setStatus(msg, warn){
+    statusLine.textContent = msg;
+    statusLine.classList.toggle("warn", !!warn);
+  }
+
+  // ---------- Image loading ----------
+  loadBtn.addEventListener("click", ()=>fileInput.click());
+  fileInput.addEventListener("change", (e)=>{
+    if(e.target.files[0]) loadImageFile(e.target.files[0]);
+  });
+  canvasWrap.addEventListener("dragover", (e)=>{ e.preventDefault(); });
+  canvasWrap.addEventListener("drop", (e)=>{
+    e.preventDefault();
+    if(e.dataTransfer.files[0]) loadImageFile(e.dataTransfer.files[0]);
+  });
+
+  function loadImageFile(file){
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        state.img = img; state.natW = img.naturalWidth; state.natH = img.naturalHeight;
+        baseCanvas.width = overlay.width = state.natW;
+        baseCanvas.height = overlay.height = state.natH;
+        bctx.drawImage(img,0,0);
+        state.pixelData = bctx.getImageData(0,0,state.natW,state.natH);
+        // reset everything else
+        state.crop=null; state.xcal={p1:null,v1:null,p2:null,v2:null,log:false};
+        state.ycal={p1:null,v1:null,p2:null,v2:null,log:false,relative:false};
+        state.series=[]; state.excludeRects=[]; state.mode="idle";
+        yRelative.checked=false; xLog.checked=false; yLog.checked=false;
+        emptyState.style.display="none";
+        baseCanvas.style.display="block"; overlay.style.display="block";
+        renderAll();
+        setStatus("Image loaded ("+state.natW+"×"+state.natH+"px). Draw a crop box (step 1) or start calibrating axes.");
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ---------- Coordinate mapping (display px -> image px) ----------
+  function toImageCoords(evt){
+    const rect = overlay.getBoundingClientRect();
+    const scaleX = overlay.width / rect.width;
+    const scaleY = overlay.height / rect.height;
+    let x = (evt.clientX - rect.left) * scaleX;
+    let y = (evt.clientY - rect.top) * scaleY;
+    x = Math.max(0, Math.min(overlay.width-1, x));
+    y = Math.max(0, Math.min(overlay.height-1, y));
+    return [Math.round(x), Math.round(y)];
+  }
+
+  // ---------- Mode-driven interaction on overlay ----------
+  overlay.addEventListener("mousedown", (e)=>{
+    if(!state.img) return;
+    const [x,y] = toImageCoords(e);
+    if(state.mode==="crop"){
+      state.dragStart=[x,y]; state.mode="crop-drag";
+    } else if(state.mode==="exclude"){
+      state.dragStart=[x,y]; state.mode="exclude-drag";
+    } else if(state.mode==="xcal1"){
+      state.xcal.p1=[x,y]; state.mode="xval-wait"; state.xcalStage=1;
+      showXValueForm(1);
+    } else if(state.mode==="xcal2"){
+      state.xcal.p2=[x,y]; state.mode="xval-wait"; state.xcalStage=2;
+      showXValueForm(2);
+    } else if(state.mode==="ycal1"){
+      state.ycal.p1=[x,y]; state.mode="yval-wait"; state.ycalStage=1;
+      showYValueForm(1);
+    } else if(state.mode==="ycal2"){
+      state.ycal.p2=[x,y]; state.mode="yval-wait"; state.ycalStage=2;
+      showYValueForm(2);
+    } else if(state.mode==="pick-color"){
+      pickColorAt(x,y);
+      state.mode="idle"; addSeriesBtn.classList.remove("active-mode");
+      renderAll();
+    }
+  });
+  overlay.addEventListener("mousemove", (e)=>{
+    if(!state.img) return;
+    if(state.mode==="crop-drag" || state.mode==="exclude-drag"){
+      const [x,y] = toImageCoords(e);
+      drawOverlay({dragRect:[state.dragStart[0],state.dragStart[1],x,y], dragKind: state.mode==="crop-drag"?"crop":"exclude"});
+    }
+  });
+  overlay.addEventListener("mouseup", (e)=>{
+    if(!state.img) return;
+    const [x,y] = toImageCoords(e);
+    if(state.mode==="crop-drag"){
+      state.crop = normRect(state.dragStart[0],state.dragStart[1],x,y);
+      state.mode="idle"; cropBtn.classList.remove("active-mode");
+      updateCropSummary(); renderAll();
+      setStatus("Crop set. Now calibrate the axes (steps 2–3).");
+    } else if(state.mode==="exclude-drag"){
+      const r = normRect(state.dragStart[0],state.dragStart[1],x,y);
+      if((r.x1-r.x0)>2 && (r.y1-r.y0)>2){
+        state.excludeRects.push(r);
+        retraceAll();
+      }
+      state.mode="idle"; excludeBtn.classList.remove("active-mode");
+      renderAll(); updateExcludeList();
+    }
+  });
+
+  function normRect(x0,y0,x1,y1){
+    return {x0:Math.min(x0,x1), y0:Math.min(y0,y1), x1:Math.max(x0,x1), y1:Math.max(y0,y1)};
+  }
+
+  // ---------- Crop ----------
+  cropBtn.addEventListener("click", ()=>{
+    state.mode="crop"; cropBtn.classList.add("active-mode");
+    setStatus("Drag a box around the plot area on the image.");
+  });
+  cropReset.addEventListener("click", ()=>{
+    state.crop=null; updateCropSummary(); renderAll();
+  });
+  function updateCropSummary(){
+    if(!state.crop){ cropSummary.textContent="Not set — full image will be used."; return; }
+    const c=state.crop;
+    cropSummary.textContent = `x:[${c.x0},${c.x1}]  y:[${c.y0},${c.y1}]  (${c.x1-c.x0}×${c.y1-c.y0}px)`;
+  }
+
+  // ---------- X calibration ----------
+  xCalBtn.addEventListener("click", ()=>{
+    state.mode="xcal1"; xCalBtn.classList.add("active-mode");
+    setStatus("Click the FIRST reference point on the x-axis.");
+  });
+  xCalReset.addEventListener("click", ()=>{
+    state.xcal={p1:null,v1:null,p2:null,v2:null,log:state.xcal.log};
+    xValueForm.style.display="none"; updateXSummary(); renderAll();
+  });
+  xLog.addEventListener("change", ()=>{ state.xcal.log = xLog.checked; updateXSummary(); previewChart(); });
+  function showXValueForm(stage){
+    xValueForm.style.display="flex";
+    xValueLabel.textContent = `Value at point ${stage}:`;
+    xValueInput.value=""; xValueInput.focus();
+    setStatus(`Enter the real x value at reference point ${stage}.`);
+  }
+  function confirmXValue(){
+    const v = parseFloat(xValueInput.value);
+    if(isNaN(v)){ setStatus("Enter a numeric value first.", true); return; }
+    if(state.xcalStage===1){
+      state.xcal.v1=v; xValueForm.style.display="none";
+      state.mode="xcal2";
+      setStatus("Click the SECOND reference point on the x-axis.");
+    } else {
+      state.xcal.v2=v; xValueForm.style.display="none";
+      state.mode="idle"; xCalBtn.classList.remove("active-mode");
+      updateXSummary(); setStatus("X axis calibrated.");
+      previewChart();
+    }
+    renderAll();
+  }
+  xValueConfirm.addEventListener("click", confirmXValue);
+  xValueInput.addEventListener("keydown", (e)=>{ if(e.key==="Enter") confirmXValue(); });
+  function updateXSummary(){
+    const c=state.xcal;
+    if(c.p1 && c.v1!=null && c.p2 && c.v2!=null){
+      xSummary.textContent = `px ${c.p1[0]} → ${c.v1}   |   px ${c.p2[0]} → ${c.v2}${c.log?"  (log)":""}`;
+    } else if(c.p1 && c.v1!=null){
+      xSummary.textContent = `px ${c.p1[0]} → ${c.v1}   |   waiting for point 2…`;
+    } else { xSummary.textContent = "Not calibrated."; }
+  }
+
+  // ---------- Y calibration ----------
+  yRelative.addEventListener("change", ()=>{
+    state.ycal.relative = yRelative.checked;
+    yNumericControls.style.display = yRelative.checked ? "none" : "block";
+    updateYSummary(); previewChart();
+  });
+  yCalBtn.addEventListener("click", ()=>{
+    state.mode="ycal1"; yCalBtn.classList.add("active-mode");
+    setStatus("Click the FIRST reference point on the y-axis.");
+  });
+  yCalReset.addEventListener("click", ()=>{
+    state.ycal={p1:null,v1:null,p2:null,v2:null,log:state.ycal.log,relative:state.ycal.relative};
+    yValueForm.style.display="none"; updateYSummary(); renderAll();
+  });
+  yLog.addEventListener("change", ()=>{ state.ycal.log = yLog.checked; updateYSummary(); previewChart(); });
+  function showYValueForm(stage){
+    yValueForm.style.display="flex";
+    yValueLabel.textContent = `Value at point ${stage}:`;
+    yValueInput.value=""; yValueInput.focus();
+    setStatus(`Enter the real y value at reference point ${stage}.`);
+  }
+  function confirmYValue(){
+    const v = parseFloat(yValueInput.value);
+    if(isNaN(v)){ setStatus("Enter a numeric value first.", true); return; }
+    if(state.ycalStage===1){
+      state.ycal.v1=v; yValueForm.style.display="none";
+      state.mode="ycal2";
+      setStatus("Click the SECOND reference point on the y-axis.");
+    } else {
+      state.ycal.v2=v; yValueForm.style.display="none";
+      state.mode="idle"; yCalBtn.classList.remove("active-mode");
+      updateYSummary(); setStatus("Y axis calibrated.");
+      previewChart();
+    }
+    renderAll();
+  }
+  yValueConfirm.addEventListener("click", confirmYValue);
+  yValueInput.addEventListener("keydown", (e)=>{ if(e.key==="Enter") confirmYValue(); });
+  function updateYSummary(){
+    if(state.ycal.relative){ ySummary.textContent="Using relative 0–100 scale (top of crop = 100, bottom = 0)."; return; }
+    const c=state.ycal;
+    if(c.p1 && c.v1!=null && c.p2 && c.v2!=null){
+      ySummary.textContent = `px ${c.p1[1]} → ${c.v1}   |   px ${c.p2[1]} → ${c.v2}${c.log?"  (log)":""}`;
+    } else if(c.p1 && c.v1!=null){
+      ySummary.textContent = `px ${c.p1[1]} → ${c.v1}   |   waiting for point 2…`;
+    } else { ySummary.textContent = "Not calibrated."; }
+  }
+
+  // ---------- Color sampling ----------
+  function sampleColor(px,py){
+    const {data,width,height} = state.pixelData;
+    let r=0,g=0,b=0,n=0;
+    for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++){
+      const x=px+dx,y=py+dy;
+      if(x<0||y<0||x>=width||y>=height) continue;
+      const i=(y*width+x)*4;
+      r+=data[i]; g+=data[i+1]; b+=data[i+2]; n++;
+    }
+    return [Math.round(r/n),Math.round(g/n),Math.round(b/n)];
+  }
+
+  // ---------- Curve tracing (color mask -> connected components -> widest) ----------
+  function traceCurveFromColor(color, tolerance){
+    const crop = state.crop || {x0:0,y0:0,x1:state.natW-1,y1:state.natH-1};
+    const w = crop.x1-crop.x0+1, h = crop.y1-crop.y0+1;
+    if(w<=0||h<=0) return {points:[], coverage:0};
+    const {data, width:fullW} = state.pixelData;
+    const mask = new Uint8Array(w*h);
+    const tol2 = tolerance*tolerance;
+    for(let y=0;y<h;y++){
+      const iy = crop.y0+y;
+      for(let x=0;x<w;x++){
+        const ix = crop.x0+x;
+        // exclude rects
+        let excluded=false;
+        for(const r of state.excludeRects){
+          if(ix>=r.x0 && ix<=r.x1 && iy>=r.y0 && iy<=r.y1){ excluded=true; break; }
+        }
+        if(excluded) continue;
+        const i=(iy*fullW+ix)*4;
+        const dr=data[i]-color[0], dg=data[i+1]-color[1], db=data[i+2]-color[2];
+        if(dr*dr+dg*dg+db*db <= tol2) mask[y*w+x]=1;
+      }
+    }
+    // connected components (8-connectivity), iterative flood fill
+    const labels = new Int32Array(w*h).fill(-1);
+    let best = null;
+    const stack = new Int32Array(w*h);
+    for(let start=0; start<w*h; start++){
+      if(!mask[start] || labels[start]!==-1) continue;
+      let sp=0; stack[sp++]=start; labels[start]=start; // use start idx as id
+      let minX=w,maxX=-1,count=0;
+      const colY = new Map(); // x -> array of y (local coords) for this comp
+      while(sp>0){
+        const cur = stack[--sp];
+        const cx = cur % w, cy = (cur / w) | 0;
+        count++;
+        if(cx<minX) minX=cx; if(cx>maxX) maxX=cx;
+        if(!colY.has(cx)) colY.set(cx, []);
+        colY.get(cx).push(cy);
+        for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++){
+          if(dx===0&&dy===0) continue;
+          const nx=cx+dx, ny=cy+dy;
+          if(nx<0||ny<0||nx>=w||ny>=h) continue;
+          const nidx = ny*w+nx;
+          if(mask[nidx] && labels[nidx]===-1){ labels[nidx]=start; stack[sp++]=nidx; }
+        }
+      }
+      const width = maxX-minX;
+      if(!best || width > best.width){
+        best = {width, minX, maxX, colY, count};
+      }
+    }
+    if(!best || best.width < 3) return {points:[], coverage:0};
+    const pts=[];
+    const xs = [...best.colY.keys()].sort((a,b)=>a-b);
+    for(const x of xs){
+      const ys = best.colY.get(x);
+      ys.sort((a,b)=>a-b);
+      const mid = ys[Math.floor(ys.length/2)]; // median row
+      pts.push([x+crop.x0, mid+crop.y0]);
+    }
+    const coverage = xs.length / w;
+    return {points:pts, coverage};
+  }
+
+  function pickColorAt(px,py){
+    const color = sampleColor(px,py);
+    const tolerance = 40;
+    const {points, coverage} = traceCurveFromColor(color, tolerance);
+    if(points.length < 3){
+      setStatus("Couldn't find a clear line at that spot — click again directly on the curve.", true);
+      return;
+    }
+    const id = state.nextSeriesId++;
+    const name = (newSeriesName.value.trim() || ("Curve "+id));
+    const colorHex = PALETTE[(id-1)%PALETTE.length];
+    state.series.push({id, name, sampledColor:color, colorHex, tolerance, points, coverage});
+    newSeriesName.value="";
+    renderSeriesList();
+    setStatus(`Traced "${name}" — ${points.length} points (${Math.round(coverage*100)}% of crop width covered).`, coverage<0.5);
+    previewChart();
+  }
+
+  addSeriesBtn.addEventListener("click", ()=>{
+    if(!state.img){ setStatus("Load an image first.", true); return; }
+    state.mode="pick-color"; addSeriesBtn.classList.add("active-mode");
+    setStatus("Click directly on the curve you want to trace.");
+  });
+
+  function retraceAll(){
+    for(const s of state.series){
+      const {points,coverage} = traceCurveFromColor(s.sampledColor, s.tolerance);
+      s.points = points; s.coverage = coverage;
+    }
+    renderSeriesList(); renderAll(); previewChart();
+  }
+
+  function renderSeriesList(){
+    seriesList.innerHTML="";
+    for(const s of state.series){
+      const div = document.createElement("div");
+      div.className="series-item";
+      div.innerHTML = `
+        <div class="series-item-head">
+          <div class="swatch" style="background:${s.colorHex}"></div>
+          <div class="series-name">${escapeHtml(s.name)}</div>
+          <button class="ghost" data-act="remove" data-id="${s.id}">Remove</button>
+        </div>
+        <div class="series-meta">${s.points.length} points · ${Math.round(s.coverage*100)}% coverage</div>
+        <div class="tol-row">tolerance
+          <input type="range" min="5" max="150" value="${s.tolerance}" data-act="tol" data-id="${s.id}">
+          <span data-tolval="${s.id}">${s.tolerance}</span>
+          <button class="ghost" data-act="retrace" data-id="${s.id}">Retrace</button>
+        </div>`;
+      seriesList.appendChild(div);
+    }
+    seriesList.querySelectorAll('[data-act="remove"]').forEach(b=>b.addEventListener("click",(e)=>{
+      const id=+e.target.dataset.id;
+      state.series = state.series.filter(s=>s.id!==id);
+      renderSeriesList(); renderAll(); previewChart();
+    }));
+    seriesList.querySelectorAll('[data-act="retrace"]').forEach(b=>b.addEventListener("click",(e)=>{
+      const id=+e.target.dataset.id;
+      const s = state.series.find(s=>s.id===id);
+      const {points,coverage} = traceCurveFromColor(s.sampledColor, s.tolerance);
+      s.points=points; s.coverage=coverage;
+      renderSeriesList(); renderAll(); previewChart();
+    }));
+    seriesList.querySelectorAll('[data-act="tol"]').forEach(inp=>inp.addEventListener("input",(e)=>{
+      const id=+e.target.dataset.id;
+      const s = state.series.find(s=>s.id===id);
+      s.tolerance = +e.target.value;
+      seriesList.querySelector(`[data-tolval="${id}"]`).textContent = s.tolerance;
+    }));
+    seriesList.querySelectorAll('[data-act="tol"]').forEach(inp=>inp.addEventListener("change",(e)=>{
+      const id=+e.target.dataset.id;
+      const s = state.series.find(s=>s.id===id);
+      const {points,coverage} = traceCurveFromColor(s.sampledColor, s.tolerance);
+      s.points=points; s.coverage=coverage;
+      renderSeriesList(); renderAll(); previewChart();
+    }));
+  }
+
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  // ---------- Exclude regions ----------
+  excludeBtn.addEventListener("click", ()=>{
+    if(!state.img){ setStatus("Load an image first.", true); return; }
+    state.mode="exclude"; excludeBtn.classList.add("active-mode");
+    setStatus("Drag a box over the area to exclude from tracing.");
+  });
+  function updateExcludeList(){
+    excludeList.innerHTML="";
+    state.excludeRects.forEach((r,i)=>{
+      const div=document.createElement("div");
+      div.className="rect-item";
+      div.innerHTML = `<span>x:[${r.x0},${r.x1}] y:[${r.y0},${r.y1}]</span><button class="ghost" data-i="${i}">Remove</button>`;
+      excludeList.appendChild(div);
+    });
+    excludeList.querySelectorAll("button").forEach(b=>b.addEventListener("click",(e)=>{
+      state.excludeRects.splice(+e.target.dataset.i,1);
+      updateExcludeList(); retraceAll();
+    }));
+  }
+
+  // ---------- Rendering overlay ----------
+  function renderAll(){
+    drawOverlay({});
+  }
+  function drawOverlay(opts){
+    octx.clearRect(0,0,overlay.width,overlay.height);
+    if(!state.img) return;
+    // crop box
+    if(state.crop){
+      octx.strokeStyle="#17212B"; octx.lineWidth=Math.max(1,overlay.width/500);
+      octx.setLineDash([6,4]);
+      const c=state.crop;
+      octx.strokeRect(c.x0,c.y0,c.x1-c.x0,c.y1-c.y0);
+      octx.setLineDash([]);
+    }
+    // exclude rects
+    octx.strokeStyle="#B5450C"; octx.fillStyle="rgba(181,69,12,0.12)";
+    for(const r of state.excludeRects){
+      octx.fillRect(r.x0,r.y0,r.x1-r.x0,r.y1-r.y0);
+      octx.setLineDash([4,3]);
+      octx.strokeRect(r.x0,r.y0,r.x1-r.x0,r.y1-r.y0);
+      octx.setLineDash([]);
+    }
+    // calibration markers
+    drawCalMarker(state.xcal.p1, "X1"); drawCalMarker(state.xcal.p2, "X2");
+    if(!state.ycal.relative){ drawCalMarker(state.ycal.p1, "Y1"); drawCalMarker(state.ycal.p2, "Y2"); }
+    // traced series
+    for(const s of state.series){
+      octx.fillStyle = s.colorHex;
+      for(const [x,y] of s.points){
+        octx.beginPath(); octx.arc(x,y,Math.max(1.2,overlay.width/700),0,7); octx.fill();
+      }
+    }
+    // live drag rect
+    if(opts.dragRect){
+      const [x0,y0,x1,y1]=opts.dragRect;
+      octx.strokeStyle = opts.dragKind==="crop" ? "#17212B" : "#B5450C";
+      octx.lineWidth=Math.max(1,overlay.width/500);
+      octx.setLineDash([6,4]);
+      octx.strokeRect(Math.min(x0,x1),Math.min(y0,y1),Math.abs(x1-x0),Math.abs(y1-y0));
+      octx.setLineDash([]);
+    }
+  }
+  function drawCalMarker(pt,label){
+    if(!pt) return;
+    const r = Math.max(3, overlay.width/250);
+    octx.fillStyle="#00B7D6"; octx.strokeStyle="#003B44"; octx.lineWidth=1.5;
+    octx.beginPath(); octx.arc(pt[0],pt[1],r,0,7); octx.fill(); octx.stroke();
+    octx.fillStyle="#003B44"; octx.font=`bold ${Math.max(10,overlay.width/70)}px monospace`;
+    octx.fillText(label, pt[0]+r+3, pt[1]-r);
+  }
+
+  // ---------- Axis mapping ----------
+  function makeMapper(p1,v1,p2,v2,axis,log){
+    if(p1==null||p2==null||v1==null||v2==null) return null;
+    const px1 = axis==="x"?p1[0]:p1[1], px2 = axis==="x"?p2[0]:p2[1];
+    if(px1===px2) return null;
+    if(log){
+      if(v1<=0||v2<=0) return null;
+      const lv1=Math.log10(v1), lv2=Math.log10(v2);
+      const m=(lv2-lv1)/(px2-px1);
+      return (px)=>Math.pow(10, lv1+m*(px-px1));
+    }
+    const m=(v2-v1)/(px2-px1);
+    return (px)=> v1+m*(px-px1);
+  }
+  function getXMapper(){
+    const c=state.xcal;
+    return makeMapper(c.p1,c.v1,c.p2,c.v2,"x",c.log);
+  }
+  function getYMapper(){
+    const c=state.ycal;
+    if(c.relative){
+      const crop = state.crop || {y0:0,y1:state.natH-1};
+      const top=crop.y0, bottom=crop.y1;
+      if(top===bottom) return null;
+      return (py)=> 100 * (bottom-py) / (bottom-top);
+    }
+    return makeMapper(c.p1,c.v1,c.p2,c.v2,"y",c.log);
+  }
+
+  // ---------- Resample + preview + export ----------
+  function computeResampled(){
+    const xMap = getXMapper(), yMap = getYMapper();
+    if(!xMap || !yMap || state.series.length===0) return null;
+    const seriesVals = state.series.map(s=>{
+      const arr = s.points.map(([px,py])=>[xMap(px), yMap(py)]);
+      arr.sort((a,b)=>a[0]-b[0]);
+      return {name:s.name, colorHex:s.colorHex, data:arr};
+    });
+    let xmin=Infinity, xmax=-Infinity;
+    for(const s of seriesVals){
+      if(s.data.length===0) continue;
+      xmin = Math.min(xmin, s.data[0][0]);
+      xmax = Math.max(xmax, s.data[s.data.length-1][0]);
+    }
+    if(!isFinite(xmin)) return null;
+    let step = parseFloat(stepInput.value);
+    if(!step || step<=0) step = (xmax-xmin)/500 || 1;
+    const grid=[];
+    for(let g=Math.min(xmin,xmax); g<=Math.max(xmin,xmax)+1e-9; g+=Math.abs(step)) grid.push(g);
+    const interpolated = seriesVals.map(s=>{
+      const xs=s.data.map(d=>d[0]), ys=s.data.map(d=>d[1]);
+      const vals = grid.map(gx=>{
+        if(xs.length<2 || gx<Math.min(xs[0],xs[xs.length-1]) || gx>Math.max(xs[0],xs[xs.length-1])) return "";
+        return linInterp(xs,ys,gx);
+      });
+      return {name:s.name, colorHex:s.colorHex, vals};
+    });
+    return {grid, series:interpolated};
+  }
+  function linInterp(xs,ys,gx){
+    for(let i=0;i<xs.length-1;i++){
+      const a=xs[i], b=xs[i+1];
+      if((gx>=a && gx<=b) || (gx<=a && gx>=b)){
+        if(a===b) return ys[i];
+        const t=(gx-a)/(b-a);
+        return ys[i] + t*(ys[i+1]-ys[i]);
+      }
+    }
+    return "";
+  }
+
+  function previewChart(){
+    const ctx = previewCanvas.getContext("2d");
+    const W=previewCanvas.width, H=previewCanvas.height;
+    ctx.clearRect(0,0,W,H);
+    const res = computeResampled();
+    ctx.fillStyle="#F7F9FA"; ctx.fillRect(0,0,W,H);
+    if(!res){
+      ctx.fillStyle="#5C6B79"; ctx.font="12px sans-serif";
+      ctx.fillText("Calibrate axes and trace at least one curve to preview.", 10, H/2);
+      return;
+    }
+    const pad=8;
+    res.series.forEach(s=>{
+      const nums = s.vals.filter(v=>v!=="");
+      if(nums.length<2) return;
+      const vmin=Math.min(...nums), vmax=Math.max(...nums);
+      ctx.strokeStyle=s.colorHex; ctx.lineWidth=1.5; ctx.beginPath();
+      let started=false;
+      s.vals.forEach((v,i)=>{
+        if(v===""){ started=false; return; }
+        const x = pad + (i/(s.vals.length-1))*(W-2*pad);
+        const norm = vmax>vmin ? (v-vmin)/(vmax-vmin) : 0.5;
+        const y = H-pad - norm*(H-2*pad);
+        if(!started){ ctx.moveTo(x,y); started=true; } else { ctx.lineTo(x,y); }
+      });
+      ctx.stroke();
+    });
+  }
+  previewBtn.addEventListener("click", previewChart);
+
+  downloadBtn.addEventListener("click", ()=>{
+    const res = computeResampled();
+    if(!res){ setStatus("Calibrate both axes and trace at least one curve before exporting.", true); return; }
+    const xlabel = xAxisLabel.value.trim() || "X";
+    const header = [xlabel, ...res.series.map(s=>s.name)];
+    const rows = [header.join(",")];
+    res.grid.forEach((gx,i)=>{
+      const row = [gx.toPrecision(8)];
+      res.series.forEach(s=> row.push(s.vals[i]===""?"":Number(s.vals[i]).toPrecision(8)));
+      rows.push(row.join(","));
+    });
+    const blob = new Blob([rows.join("\n")], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href=url; a.download="digitized_data.csv"; a.click();
+    URL.revokeObjectURL(url);
+    setStatus("CSV downloaded.");
+  });
+
+  updateCropSummary(); updateXSummary(); updateYSummary(); updateExcludeList();
+})();
+</script>
+</body>
+</html>
