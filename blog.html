@@ -75,10 +75,17 @@ gtag('config', 'GT-TNFSPH4F');
   const FEED_URL = "https://riaayupramudita.substack.com/feed";
   const POST_COUNT = 5;
 
+  // Primary: Substack's own public archive API (same publication, no proxy needed
+  // when CORS allows). Fallback: RSS via rss2json, then generic CORS proxies
+  // parsing raw RSS XML, then a local posts.json snapshot.
+  const ARCHIVE_URL = "https://riaayupramudita.substack.com/api/v1/archive?sort=new&limit=" + POST_COUNT;
   // Substack's RSS feed doesn't send CORS headers, so a direct browser fetch()
   // is blocked. RSS2JSON fetches the feed server-side and hands back CORS-friendly
   // JSON, so this static page can read it client-side with no backend of its own.
+  // NOTE: rss2json currently rejects this feed ("not a valid RSS feed"), so it is
+  // kept as one fallback among several — not the only path.
   const PROXY_URL = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(FEED_URL);
+  const CACHE_URL = "posts.json";
 
   const statusEl = document.getElementById('status');
   const listEl = document.getElementById('post-list');
@@ -133,22 +140,107 @@ gtag('config', 'GT-TNFSPH4F');
     });
   }
 
-  async function loadFeed(){
+  function normalizeArchivePost(p){
+    return {
+      title: p.title || "Untitled",
+      link: p.canonical_url || ("https://riaayupramudita.substack.com/p/" + (p.slug || "")),
+      pubDate: p.post_date || "",
+      description: p.subtitle || p.description || p.truncated_body_text || ""
+    };
+  }
+
+  function parseRssXml(xmlText){
+    const doc = new DOMParser().parseFromString(xmlText, "text/xml");
+    if(doc.querySelector("parsererror")) throw new Error("Invalid RSS XML");
+    return Array.from(doc.querySelectorAll("item")).map((el) => {
+      const text = (tag) => {
+        const n = el.querySelector(tag);
+        return n ? n.textContent.trim() : "";
+      };
+      return {
+        title: text("title") || "Untitled",
+        link: text("link") || "#",
+        pubDate: text("pubDate") || "",
+        description: text("description") || text("encoded") || ""
+      };
+    });
+  }
+
+  async function fetchText(url, timeoutMs = 12000){
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), timeoutMs);
+    try{
+      const res = await fetch(url, { signal: ctrl.signal });
+      if(!res.ok) throw new Error("HTTP " + res.status + " from " + url);
+      return await res.text();
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  async function loadLivePosts(){
+    const errors = [];
+
+    // 1) Substack native archive API (direct, no proxy).
+    try{
+      const res = await fetch(ARCHIVE_URL);
+      if(!res.ok) throw new Error("Archive HTTP " + res.status);
+      const data = await res.json();
+      const arr = Array.isArray(data) ? data : data.posts || data.items || [];
+      if(!arr.length) throw new Error("Archive returned no posts");
+      return arr.slice(0, POST_COUNT).map(normalizeArchivePost);
+    } catch(err){ errors.push("archive: " + err.message); }
+
+    // 2) RSS via rss2json (legacy path — currently fails server-side, kept for when it recovers).
     try{
       const res = await fetch(PROXY_URL);
-      if(!res.ok) throw new Error("Network response was not ok");
+      if(!res.ok) throw new Error("rss2json HTTP " + res.status);
       const data = await res.json();
-
       if(data.status !== 'ok' || !Array.isArray(data.items)) {
-        throw new Error(data.message || "Failed to parse feed");
+        throw new Error(data.message || "rss2json parse failed");
       }
-      if(data.items.length === 0) throw new Error("No posts found in feed");
+      if(!data.items.length) throw new Error("rss2json returned no posts");
+      return data.items.slice(0, POST_COUNT);
+    } catch(err){ errors.push("rss2json: " + err.message); }
 
+    // 3) Raw RSS through public CORS proxies (parsed client-side as XML).
+    const rawProxies = [
+      "https://api.allorigins.win/raw?url=" + encodeURIComponent(FEED_URL),
+      "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(FEED_URL)
+    ];
+    for(const u of rawProxies){
+      try{
+        const xml = await fetchText(u);
+        const items = parseRssXml(xml);
+        if(!items.length) throw new Error("no items in RSS");
+        return items.slice(0, POST_COUNT);
+      } catch(err){ errors.push(u + " → " + err.message); }
+    }
+
+    throw new Error(errors.join(" | "));
+  }
+
+  async function loadFeed(){
+    try{
+      const items = await loadLivePosts();
       statusEl.style.display = 'none';
-      renderPosts(data.items);
-    } catch(err){
-      statusEl.textContent = "Couldn't load posts right now — read the latest on Substack instead.";
-      statusEl.classList.add('error');
+      renderPosts(items);
+    } catch(liveErr){
+      console.warn("Live Substack fetch failed, falling back to posts.json:", liveErr.message);
+      try{
+        const res = await fetch(CACHE_URL);
+        if(!res.ok) throw new Error("cache HTTP " + res.status);
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : data.items || [];
+        if(!items.length) throw new Error("cache empty");
+        renderPosts(items.slice(0, POST_COUNT));
+        const when = data.fetchedAt ? formatDate(data.fetchedAt) : "";
+        statusEl.textContent = "Live Substack fetch is blocked right now — showing the latest cached posts" + (when ? " (" + when + ")" : "") + ". Read the newest on Substack →";
+        statusEl.classList.add('error');
+      } catch(cacheErr){
+        statusEl.textContent = "Couldn't load posts right now — read the latest on Substack instead.";
+        statusEl.classList.add('error');
+      }
     }
   }
 
